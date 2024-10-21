@@ -1,15 +1,15 @@
 import { Container } from "@mui/material"
-import { useAuthState } from "react-firebase-hooks/auth"
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import { auth } from "./app/firebase"
+import { useAppSelector } from "./app/hooks"
+import { selectCurrentUid } from "./features/auth/authSlice"
 import { SignIn } from "./features/auth/SignIn"
 import { SignOut } from "./features/auth/SignOut"
 import { History } from "./features/history/History"
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const [user] = useAuthState(auth)
+  const uid = useAppSelector(selectCurrentUid)
 
-  if (!user) {
+  if (!uid) {
     return <Navigate to="/signin" replace />
   }
 
