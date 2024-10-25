@@ -9,6 +9,8 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
+import { useGetItemsQuery } from "../features/history/historySlice"
+import SimpleBackdrop from "./SimpleBackdrop"
 
 const StyledTableRow = styled(TableRow)(({}) => ({
   "&:nth-of-type(odd)": {
@@ -20,8 +22,8 @@ const StyledTableRow = styled(TableRow)(({}) => ({
   },
 }))
 
-function createData(name: string, calories: string) {
-  return { name, calories }
+function createData(category: string, categorySub: string) {
+  return { category, categorySub }
 }
 
 const rows = [
@@ -54,6 +56,24 @@ const rows = [
 ]
 
 export default function HistoryTable() {
+  const {
+    data: items = [],
+    isLoading,
+    isFetching,
+    isSuccess,
+    isError,
+    error,
+    refetch,
+  } = useGetItemsQuery()
+
+  if (isLoading) {
+    return <SimpleBackdrop open={isLoading} />
+  }
+  /*
+  if (error) {
+    return <strong>Error: {error. as string}</strong>
+  }
+*/
   return (
     <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
       <Table aria-label="simple table">
@@ -65,10 +85,12 @@ export default function HistoryTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <TableCell scope="row">{row.name}</TableCell>
-              <TableCell>{row.calories}</TableCell>
+          {items.map((item) => (
+            <StyledTableRow key={item.id}>
+              <TableCell scope="row">{item.createDatetime}</TableCell>
+              <TableCell>
+                {item.category} {item.categorySub}
+              </TableCell>
               <TableCell align="center">
                 <Grid2 container sx={{ marginLeft: "20%", marginRight: "20%" }}>
                   <Grid2 size={6}>

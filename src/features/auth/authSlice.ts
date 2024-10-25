@@ -22,7 +22,7 @@ const authSlice = createSlice({
   },
 })
 
-export const selectCurrentUid = (state: RootState) => state.uid
+export const selectCurrentUid = (state: RootState) => state.auth.uid
 
 export const { login, logout } = authSlice.actions
 

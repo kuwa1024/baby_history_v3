@@ -1,19 +1,40 @@
-import { createStore } from "@reduxjs/toolkit"
-import { persistReducer, persistStore } from "redux-persist"
+import { combineReducers, configureStore } from "@reduxjs/toolkit"
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist"
 import storage from "redux-persist/es/storage"
 import authReducer from "../features/auth/authSlice"
+import { historySlice } from "../features/history/historySlice"
 
 const persistConfig = {
   key: "root",
+  version: 1,
+  whitelist: ["auth"],
   storage,
 }
 
-const persistedReducer = persistReducer(persistConfig, authReducer)
+const rootReducer = combineReducers({
+  auth: authReducer,
+  [historySlice.reducerPath]: historySlice.reducer,
+})
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export const store = createStore(
-  persistedReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-)
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(historySlice.middleware),
+})
 
 export const persistor = persistStore(store)
 

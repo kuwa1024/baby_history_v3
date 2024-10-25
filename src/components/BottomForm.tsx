@@ -9,10 +9,12 @@ import {
   SelectChangeEvent,
 } from "@mui/material"
 import * as React from "react"
+import { useAddNewItemMutation } from "../features/history/historySlice"
 
 export default function BottomForm() {
   const [age, setAge] = React.useState("")
   const [age2, setAge2] = React.useState("")
+  const [addNewItem, { isLoading }] = useAddNewItemMutation()
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string)
@@ -20,6 +22,21 @@ export default function BottomForm() {
   const handleChange2 = (event: SelectChangeEvent) => {
     setAge2(event.target.value as string)
   }
+
+  const handleSubmit = async () => {
+    const category = age
+    const categorySub = age2
+
+    try {
+      await addNewItem({ category, categorySub }).unwrap()
+
+      setAge("")
+      setAge2("")
+    } catch (err) {
+      console.error("Failed to save the item: ", err)
+    }
+  }
+
   return (
     <Paper
       sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
@@ -37,9 +54,9 @@ export default function BottomForm() {
               onChange={handleChange}
               sx={{ width: "100%" }}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={"Ten"}>Ten</MenuItem>
+              <MenuItem value={"Twenty"}>Twenty</MenuItem>
+              <MenuItem value={"Thirty"}>Thirty</MenuItem>
             </Select>
           </FormControl>
         </Grid2>
@@ -54,15 +71,16 @@ export default function BottomForm() {
               onChange={handleChange2}
               sx={{ width: "100%" }}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={"Ten"}>Ten</MenuItem>
+              <MenuItem value={"Twenty"}>Twenty</MenuItem>
+              <MenuItem value={"Thirty"}>Thirty</MenuItem>
             </Select>
           </FormControl>
         </Grid2>
         <Grid2 size={4} sx={{ padding: "10px" }}>
           <Button
             variant="contained"
+            onClick={handleSubmit}
             sx={{
               width: "100%",
               height: "70%",
