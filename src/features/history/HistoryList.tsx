@@ -9,8 +9,8 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import { useGetItemsQuery } from "../features/history/historySlice"
-import SimpleBackdrop from "./SimpleBackdrop"
+import CommonBackdrop from "../../components/CommonBackdrop"
+import { useGetItemsQuery } from "./historySlice"
 
 const StyledTableRow = styled(TableRow)(({}) => ({
   "&:nth-of-type(odd)": {
@@ -55,7 +55,7 @@ const rows = [
   createData("05/26 10:21", "うんこ"),
 ]
 
-export default function HistoryTable() {
+export default function HistoryList() {
   const {
     data: items = [],
     isLoading,
@@ -67,7 +67,7 @@ export default function HistoryTable() {
   } = useGetItemsQuery()
 
   if (isLoading) {
-    return <SimpleBackdrop open={isLoading} />
+    return <CommonBackdrop open={isLoading} />
   }
   /*
   if (error) {

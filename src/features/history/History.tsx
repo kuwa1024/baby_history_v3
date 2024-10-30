@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom"
-import BottomForm from "../../components/BottomForm"
 import FabSearch from "../../components/FabSearch"
 import FabUp from "../../components/FabUp"
-import HistoryTable from "../../components/HistoryTable"
+import BottomForm from "./BottomForm"
+import HistoryList from "./HistoryList"
 
 export const History = () => {
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ export const History = () => {
   return (
     <div>
       <button onClick={() => navigate("/signout")}>サインアウト</button>
-      <HistoryTable />
+      <HistoryList />
       <FabSearch />
       <FabUp />
       <BottomForm />

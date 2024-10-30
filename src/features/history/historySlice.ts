@@ -2,7 +2,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react"
 import {
   addDoc,
   collection,
-  getDocs,
+  onSnapshot,
   orderBy,
   query,
   Timestamp,
@@ -27,29 +27,33 @@ export const historySlice = createApi({
       queryFn: async () => {
         const itemRef = collection(db, "items")
         const q = query(itemRef, orderBy("createDatetime", "desc"))
-        const querySnapshot = await getDocs(q)
-        let items: Item[] = []
-        querySnapshot.forEach((doc) => {
-          items.push({
-            id: doc.id,
-            category: doc.data().category,
-            categorySub: doc.data().categorySub,
-            createDatetime: new Date(
-              doc.data().createDatetime.seconds * 1000,
-            ).toLocaleString(),
-          } as Item)
+        console.log("getItems")
+        const unsub = await onSnapshot(q, (querySnapshot) => {
+          let items: Item[] = []
+          querySnapshot.forEach((doc) => {
+            items.push({
+              id: doc.id,
+              category: doc.data().category,
+              categorySub: doc.data().categorySub,
+              createDatetime: new Date(
+                doc.data().createDatetime.seconds * 1000,
+              ).toLocaleString(),
+            } as Item)
+          })
+          console.log(items)
+          return items
         })
-        return { data: items }
+        return { data: [] }
       },
       providesTags: ["Item"],
     }),
-    addNewItem: builder.mutation<null, NewItem>({
+    addNewItem: builder.mutation<string, NewItem>({
       queryFn: async (item) => {
         const docRef = await addDoc(collection(db, "items"), {
           ...item,
           createDatetime: Timestamp.fromDate(new Date()),
         })
-        return { data: null }
+        return { data: docRef.id }
       },
       invalidatesTags: ["Item"],
     }),
