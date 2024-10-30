@@ -2,7 +2,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react"
 import {
   addDoc,
   collection,
-  onSnapshot,
+  getDocs,
   orderBy,
   query,
   Timestamp,
@@ -27,23 +27,19 @@ export const historySlice = createApi({
       queryFn: async () => {
         const itemRef = collection(db, "items")
         const q = query(itemRef, orderBy("createDatetime", "desc"))
-        console.log("getItems")
-        const unsub = await onSnapshot(q, (querySnapshot) => {
-          let items: Item[] = []
-          querySnapshot.forEach((doc) => {
-            items.push({
-              id: doc.id,
-              category: doc.data().category,
-              categorySub: doc.data().categorySub,
-              createDatetime: new Date(
-                doc.data().createDatetime.seconds * 1000,
-              ).toLocaleString(),
-            } as Item)
-          })
-          console.log(items)
-          return items
+        const querySnapshot = await getDocs(q)
+        let items: Item[] = []
+        querySnapshot.forEach((doc) => {
+          items.push({
+            id: doc.id,
+            category: doc.data().category,
+            categorySub: doc.data().categorySub,
+            createDatetime: new Date(
+              doc.data().createDatetime.seconds * 1000,
+            ).toLocaleString(),
+          } as Item)
         })
-        return { data: [] }
+        return { data: items }
       },
       providesTags: ["Item"],
     }),
