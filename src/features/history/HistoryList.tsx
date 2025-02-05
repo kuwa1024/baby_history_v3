@@ -22,40 +22,13 @@ const StyledTableRow = styled(TableRow)(({}) => ({
   },
 }))
 
-function createData(category: string, categorySub: string) {
-  return { category, categorySub }
+interface HistoryListProps {
+  isLoading: boolean
 }
 
-const rows = [
-  createData("05/01 10:21", "母乳(右) 20分"),
-  createData("05/02 10:21", "うんこ"),
-  createData("05/03 10:21", "うんこ"),
-  createData("05/04 10:21", "うんこ"),
-  createData("05/05 10:21", "うんこ"),
-  createData("05/06 10:21", "うんこ"),
-  createData("05/07 10:21", "うんこ"),
-  createData("05/08 10:21", "うんこ"),
-  createData("05/09 10:21", "うんこ"),
-  createData("05/10 10:21", "うんこ"),
-  createData("05/11 10:21", "うんこ"),
-  createData("05/12 10:21", "うんこ"),
-  createData("05/13 10:21", "うんこ"),
-  createData("05/14 10:21", "うんこ"),
-  createData("05/15 10:21", "うんこ"),
-  createData("05/16 10:21", "うんこ"),
-  createData("05/17 10:21", "うんこ"),
-  createData("05/18 10:21", "うんこ"),
-  createData("05/19 10:21", "うんこ"),
-  createData("05/20 10:21", "うんこ"),
-  createData("05/21 10:21", "うんこ"),
-  createData("05/22 10:21", "うんこ"),
-  createData("05/23 10:21", "うんこ"),
-  createData("05/24 10:21", "うんこ"),
-  createData("05/25 10:21", "うんこ"),
-  createData("05/26 10:21", "うんこ"),
-]
-
-export default function HistoryList() {
+export default function HistoryList({
+  isLoading: propIsLoading,
+}: HistoryListProps) {
   const {
     data: items = [],
     isLoading,
@@ -66,14 +39,14 @@ export default function HistoryList() {
     refetch,
   } = useGetItemsQuery()
 
-  if (isLoading) {
-    return <CommonBackdrop open={isLoading} />
+  if (isLoading || propIsLoading) {
+    return <CommonBackdrop open={isLoading || propIsLoading} />
   }
-  /*
+
   if (error) {
-    return <strong>Error: {error. as string}</strong>
+    return <strong>Error: {error as string}</strong>
   }
-*/
+
   return (
     <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
       <Table aria-label="simple table">

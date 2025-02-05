@@ -2,6 +2,7 @@ interface categorySub {
   id: string
   label: string
   items: string[]
+  required?: boolean
 }
 
 const categorySubItem1: string[] = [
@@ -122,18 +123,21 @@ const categorySub1: categorySub = {
   id: "categorySub",
   label: "サブカテゴリー",
   items: categorySubItem1,
+  required: true,
 }
 
 const categorySub2: categorySub = {
   id: "categorySub",
   label: "サブカテゴリー",
   items: categorySubItem2,
+  required: true,
 }
 
 const categorySub3: categorySub = {
   id: "categorySub",
   label: "サブカテゴリー",
   items: categorySubItem3,
+  required: true,
 }
 
 export const categorySub: categorySub[] = [

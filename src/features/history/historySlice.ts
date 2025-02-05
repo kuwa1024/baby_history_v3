@@ -45,6 +45,8 @@ export const historySlice = createApi({
     }),
     addNewItem: builder.mutation<string, NewItem>({
       queryFn: async (item) => {
+        // テスト用遅延ロード
+        // await new Promise((resolve) => setTimeout(resolve, 2000))
         const docRef = await addDoc(collection(db, "items"), {
           ...item,
           createDatetime: Timestamp.fromDate(new Date()),

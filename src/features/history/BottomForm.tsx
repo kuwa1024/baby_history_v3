@@ -1,8 +1,9 @@
 import { Button, Grid2, Paper } from "@mui/material"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { CommonSelect, commonSelectProps } from "../../components/CommonSelect"
-import { category } from "./category"
-import { categorySub } from "./categorySub"
+import { useEffect } from "react"
+import { SubmitHandler, useForm } from "react-hook-form-mui"
+import { Select, SelectProps } from "../../components/Select"
+import { category } from "../../consts/category"
+import { categorySub } from "../../consts/categorySub"
 import { useAddNewItemMutation } from "./historySlice"
 
 interface Inputs {
@@ -10,14 +11,22 @@ interface Inputs {
   categorySub: string
 }
 
-export default function BottomForm() {
+interface BottomFormProps {
+  setIsLoading: (isLoading: boolean) => void
+}
+
+export default function BottomForm({ setIsLoading }: BottomFormProps) {
   const [addNewItem, { isLoading }] = useAddNewItemMutation()
+
+  useEffect(() => {
+    setIsLoading(isLoading)
+  }, [isLoading, setIsLoading])
+
   const { control, watch, handleSubmit, reset } = useForm<Inputs>()
 
-  const categorySelectProps: commonSelectProps = {
+  const categorySelectProps: SelectProps = {
     ...category,
     control: control,
-    required: true,
   }
 
   const index = watch("category")
@@ -26,7 +35,7 @@ export default function BottomForm() {
       ]
     : 0
   const categorySubSelect = categorySub[index]
-  const categorySubSelectProps: commonSelectProps = {
+  const categorySubSelectProps: SelectProps = {
     ...categorySubSelect,
     control: control,
   }
@@ -35,7 +44,7 @@ export default function BottomForm() {
     try {
       await addNewItem({
         category: data.category,
-        categorySub: data.categorySub,
+        categorySub: data.categorySub ?? "",
       }).unwrap()
       reset()
     } catch (err) {
@@ -51,10 +60,10 @@ export default function BottomForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid2 container spacing={1}>
           <Grid2 size={4} sx={{ padding: "20px" }}>
-            <CommonSelect {...categorySelectProps} />
+            <Select {...categorySelectProps} />
           </Grid2>
           <Grid2 size={4} sx={{ padding: "20px" }}>
-            <CommonSelect {...categorySubSelectProps} />
+            <Select {...categorySubSelectProps} />
           </Grid2>
           <Grid2 size={4} sx={{ padding: "10px" }}>
             <Button

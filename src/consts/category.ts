@@ -3,6 +3,7 @@ interface category {
   label: string
   items: string[]
   relations: number[]
+  required?: boolean
 }
 
 const item: string[] = [
@@ -22,4 +23,5 @@ export const category: category = {
   label: "カテゴリー",
   items: item,
   relations: relation,
+  required: true,
 }
