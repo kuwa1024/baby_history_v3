@@ -2,7 +2,7 @@ interface categorySub {
   id: string
   label: string
   items: string[]
-  required?: boolean
+  required: boolean
 }
 
 const categorySubItem1: string[] = [
@@ -117,6 +117,7 @@ const categorySub0: categorySub = {
   id: "categorySub",
   label: "サブカテゴリー",
   items: [],
+  required: false,
 }
 
 const categorySub1: categorySub = {

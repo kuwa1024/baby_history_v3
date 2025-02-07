@@ -1,6 +1,7 @@
 import { Button, Grid2, Paper } from "@mui/material"
 import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form-mui"
+import { NotificationProps } from "../../components/Notification"
 import { Select, SelectProps } from "../../components/Select"
 import { category } from "../../consts/category"
 import { categorySub } from "../../consts/categorySub"
@@ -11,27 +12,33 @@ interface Inputs {
   categorySub: string
 }
 
-interface BottomFormProps {
+interface HistoryAddFormProps {
   setIsLoading: (isLoading: boolean) => void
+  setNotification: (notification: NotificationProps) => void
 }
 
-export default function BottomForm({ setIsLoading }: BottomFormProps) {
+export default function HistoryAddForm({
+  setIsLoading,
+  setNotification,
+}: HistoryAddFormProps) {
   const [addNewItem, { isLoading }] = useAddNewItemMutation()
 
   useEffect(() => {
     setIsLoading(isLoading)
-  }, [isLoading, setIsLoading])
+  }, [isLoading])
 
-  const { control, watch, handleSubmit, reset } = useForm<Inputs>()
+  const { control, watch, handleSubmit, reset, register, unregister } =
+    useForm<Inputs>()
 
   const categorySelectProps: SelectProps = {
     ...category,
     control: control,
   }
 
-  const index = watch("category")
+  const categoryValue = watch("category")
+  const index = categoryValue
     ? category.relations[
-        category.items.findIndex((item) => item === watch("category"))
+        category.items.findIndex((item) => item === categoryValue)
       ]
     : 0
   const categorySubSelect = categorySub[index]
@@ -40,6 +47,11 @@ export default function BottomForm({ setIsLoading }: BottomFormProps) {
     control: control,
   }
 
+  useEffect(() => {
+    unregister("categorySub")
+    register("categorySub")
+  }, [categoryValue])
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       await addNewItem({
@@ -47,8 +59,9 @@ export default function BottomForm({ setIsLoading }: BottomFormProps) {
         categorySub: data.categorySub ?? "",
       }).unwrap()
       reset()
+      setNotification({ message: "登録しました", severity: "success" })
     } catch (err) {
-      console.error("Failed to save the post: ", err)
+      setNotification({ message: "登録に失敗しました", severity: "error" })
     }
   }
 

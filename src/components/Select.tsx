@@ -12,6 +12,9 @@ export interface SelectProps {
 
 export const Select = (props: SelectProps) => {
   const options = props.items.map((item) => ({ id: item, label: item }))
+  if (props.id === "categorySub") {
+    console.log(props)
+  }
   return (
     <Box>
       <SelectElement

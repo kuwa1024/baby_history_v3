@@ -3,13 +3,15 @@ import {
   addDoc,
   collection,
   getDocs,
+  limit,
   orderBy,
   query,
+  startAfter,
   Timestamp,
 } from "firebase/firestore"
 import { db } from "../../app/firebase"
 
-interface Item {
+export interface Item {
   id: string
   category: string
   categorySub: string
@@ -23,12 +25,22 @@ export const historySlice = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Item"],
   endpoints: (builder) => ({
-    getItems: builder.query<Item[], void>({
-      queryFn: async () => {
+    getItems: builder.query<Item[], { lastItems?: Item[] }>({
+      queryFn: async ({ lastItems }) => {
         const itemRef = collection(db, "items")
-        const q = query(itemRef, orderBy("createDatetime", "desc"))
+        const queryConstraints = []
+        queryConstraints.push(orderBy("createDatetime", "desc"))
+        queryConstraints.push(limit(20))
+        if (lastItems) {
+          const lastItem = lastItems[lastItems.length - 1]
+          const lastItemDate = Timestamp.fromDate(
+            new Date(lastItem.createDatetime),
+          )
+          queryConstraints.push(startAfter(lastItemDate))
+        }
+        let q = query(itemRef, ...queryConstraints)
         const querySnapshot = await getDocs(q)
-        let items: Item[] = []
+        let items: Item[] = lastItems ? [...lastItems] : []
         querySnapshot.forEach((doc) => {
           items.push({
             id: doc.id,

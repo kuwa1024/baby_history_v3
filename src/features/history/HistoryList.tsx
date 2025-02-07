@@ -9,8 +9,9 @@ import TableCell from "@mui/material/TableCell"
 import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
-import CommonBackdrop from "../../components/CommonBackdrop"
-import { useGetItemsQuery } from "./historySlice"
+import { useEffect, useState } from "react"
+import { NotificationProps } from "../../components/Notification"
+import { Item, useGetItemsQuery } from "./historySlice"
 
 const StyledTableRow = styled(TableRow)(({}) => ({
   "&:nth-of-type(odd)": {
@@ -23,29 +24,51 @@ const StyledTableRow = styled(TableRow)(({}) => ({
 }))
 
 interface HistoryListProps {
-  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
+  setNotification: (notification: NotificationProps) => void
 }
 
 export default function HistoryList({
-  isLoading: propIsLoading,
+  setIsLoading,
+  setNotification,
 }: HistoryListProps) {
+  const [lastItems, setLastItems] = useState<Item[] | undefined>(undefined)
   const {
     data: items = [],
     isLoading,
     isFetching,
-    isSuccess,
     isError,
-    error,
     refetch,
-  } = useGetItemsQuery()
+  } = useGetItemsQuery({ lastItems })
 
-  if (isLoading || propIsLoading) {
-    return <CommonBackdrop open={isLoading || propIsLoading} />
-  }
+  useEffect(() => {
+    setIsLoading(isLoading || isFetching)
+  }, [isLoading, isFetching])
 
-  if (error) {
-    return <strong>Error: {error as string}</strong>
-  }
+  useEffect(() => {
+    if (isError) {
+      setNotification({
+        message: "データの取得に失敗しました",
+        severity: "error",
+      })
+    }
+  }, [isError])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const bottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight
+      if (bottom && !isFetching) {
+        setLastItems(items)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [isFetching])
 
   return (
     <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>

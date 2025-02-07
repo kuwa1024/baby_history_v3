@@ -4,7 +4,8 @@ import { useAppSelector } from "./app/hooks"
 import { selectCurrentUid } from "./features/auth/authSlice"
 import { SignIn } from "./features/auth/SignIn"
 import { SignOut } from "./features/auth/SignOut"
-import { History } from "./features/history/History"
+import { HistoryEditPage } from "./features/history/HistoryEditPage"
+import { HistoryPage } from "./features/history/HistoryPage"
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const uid = useAppSelector(selectCurrentUid)
@@ -27,7 +28,8 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Routes>
-                  <Route path="/" element={<History />} />
+                  <Route path="/" element={<HistoryPage />} />
+                  <Route path="/edit" element={<HistoryEditPage />} />
                   <Route path="/signout" element={<SignOut />} />
                 </Routes>
               </ProtectedRoute>
