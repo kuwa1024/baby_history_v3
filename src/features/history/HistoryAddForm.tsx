@@ -1,11 +1,13 @@
 import { Button, Grid2, Paper } from "@mui/material"
 import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form-mui"
+import { useDispatch } from "react-redux"
 import { NotificationProps } from "../../components/Notification"
 import { Select, SelectProps } from "../../components/Select"
 import { category } from "../../consts/category"
 import { categorySub } from "../../consts/categorySub"
 import { useAddNewItemMutation } from "./historySlice"
+import { resetItems } from "./itemsSlice"
 
 interface Inputs {
   category: string
@@ -21,6 +23,7 @@ export default function HistoryAddForm({
   setIsLoading,
   setNotification,
 }: HistoryAddFormProps) {
+  const dispatch = useDispatch()
   const [addNewItem, { isLoading }] = useAddNewItemMutation()
 
   useEffect(() => {
@@ -59,6 +62,7 @@ export default function HistoryAddForm({
         categorySub: data.categorySub ?? "",
       }).unwrap()
       reset()
+      dispatch(resetItems())
       setNotification({ message: "登録しました", severity: "success" })
     } catch {
       setNotification({ message: "登録に失敗しました", severity: "error" })

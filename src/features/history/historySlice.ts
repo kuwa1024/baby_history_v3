@@ -53,13 +53,7 @@ export const historySlice = createApi({
         })
         return { data: items }
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Item", id }) as const),
-              { type: "Item", id: "LIST" },
-            ]
-          : [{ type: "Item", id: "LIST" }],
+      providesTags: ["Item"],
     }),
     addNewItem: builder.mutation<string, NewItem>({
       queryFn: async (item) => {
@@ -71,13 +65,7 @@ export const historySlice = createApi({
         })
         return { data: docRef.id }
       },
-      invalidatesTags: [{ type: "Item", id: "LIST" }],
-      /*
-      invalidatesTags: (result, error, newItem) => [
-        { type: "Item", result },
-        { type: "Item", id: "PARTIAL-LIST" },
-      ],
-      */
+      invalidatesTags: ["Item"],
     }),
   }),
 })

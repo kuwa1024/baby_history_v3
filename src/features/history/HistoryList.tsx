@@ -10,8 +10,11 @@ import TableContainer from "@mui/material/TableContainer"
 import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../app/store"
 import { NotificationProps } from "../../components/Notification"
 import { Item, useGetItemsQuery } from "./historySlice"
+import { addItems } from "./itemsSlice"
 
 const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
@@ -32,7 +35,8 @@ export default function HistoryList({
   setIsLoading,
   setNotification,
 }: HistoryListProps) {
-  const [items, setItems] = useState<Item[]>([])
+  const dispatch = useDispatch()
+  const items = useSelector((state: RootState) => state.items.items)
   const [lastItem, setLastItem] = useState<Item | undefined>(undefined)
   const {
     data: newItems = [],
@@ -56,21 +60,20 @@ export default function HistoryList({
 
   useEffect(() => {
     if (newItems.length > 0) {
-      setItems((prevItems) => {
-        const newUniqueItems = newItems.filter(
-          (newItem) => !prevItems.some((item) => item.id === newItem.id),
-        )
-        return [...prevItems, ...newUniqueItems]
-      })
+      dispatch(addItems(newItems))
     }
-  }, [newItems])
+  }, [newItems, dispatch])
 
   useEffect(() => {
+    if (items.length === 0) {
+      setLastItem(undefined)
+    }
+
     const handleScroll = () => {
       const bottom =
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight
-      if (bottom && !isFetching) {
+      if (bottom) {
         setLastItem(items[items.length - 1])
       }
     }
@@ -79,7 +82,7 @@ export default function HistoryList({
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [isFetching, items])
+  }, [items])
 
   return (
     <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
