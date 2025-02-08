@@ -25,14 +25,13 @@ export const historySlice = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Item"],
   endpoints: (builder) => ({
-    getItems: builder.query<Item[], { lastItems?: Item[] }>({
-      queryFn: async ({ lastItems }) => {
+    getItems: builder.query<Item[], { lastItem?: Item }>({
+      queryFn: async ({ lastItem }) => {
         const itemRef = collection(db, "items")
         const queryConstraints = []
         queryConstraints.push(orderBy("createDatetime", "desc"))
         queryConstraints.push(limit(20))
-        if (lastItems) {
-          const lastItem = lastItems[lastItems.length - 1]
+        if (lastItem) {
           const lastItemDate = Timestamp.fromDate(
             new Date(lastItem.createDatetime),
           )
@@ -40,7 +39,7 @@ export const historySlice = createApi({
         }
         let q = query(itemRef, ...queryConstraints)
         const querySnapshot = await getDocs(q)
-        let items: Item[] = lastItems ? [...lastItems] : []
+        let items: Item[] = []
         querySnapshot.forEach((doc) => {
           items.push({
             id: doc.id,
@@ -53,7 +52,13 @@ export const historySlice = createApi({
         })
         return { data: items }
       },
-      providesTags: ["Item"],
+      providesTags: (result, error, lastItem) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Item", id }) as const),
+              { type: "Item", id: "LIST" },
+            ]
+          : [{ type: "Item", id: "LIST" }],
     }),
     addNewItem: builder.mutation<string, NewItem>({
       queryFn: async (item) => {
@@ -65,7 +70,13 @@ export const historySlice = createApi({
         })
         return { data: docRef.id }
       },
-      invalidatesTags: ["Item"],
+      invalidatesTags: [{ type: "Item", id: "LIST" }],
+      /*
+      invalidatesTags: (result, error, newItem) => [
+        { type: "Item", result },
+        { type: "Item", id: "PARTIAL-LIST" },
+      ],
+      */
     }),
   }),
 })

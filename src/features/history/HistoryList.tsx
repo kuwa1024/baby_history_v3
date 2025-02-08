@@ -32,14 +32,15 @@ export default function HistoryList({
   setIsLoading,
   setNotification,
 }: HistoryListProps) {
-  const [lastItems, setLastItems] = useState<Item[] | undefined>(undefined)
+  const [items, setItems] = useState<Item[]>([])
+  const [lastItem, setLastItem] = useState<Item | undefined>(undefined)
   const {
-    data: items = [],
+    data: newItems = [],
     isLoading,
     isFetching,
     isError,
     refetch,
-  } = useGetItemsQuery({ lastItems })
+  } = useGetItemsQuery({ lastItem })
 
   useEffect(() => {
     setIsLoading(isLoading || isFetching)
@@ -55,12 +56,23 @@ export default function HistoryList({
   }, [isError])
 
   useEffect(() => {
+    if (newItems.length > 0) {
+      setItems((prevItems) => {
+        const newUniqueItems = newItems.filter(
+          (newItem) => !prevItems.some((item) => item.id === newItem.id),
+        )
+        return [...prevItems, ...newUniqueItems]
+      })
+    }
+  }, [newItems])
+
+  useEffect(() => {
     const handleScroll = () => {
       const bottom =
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight
       if (bottom && !isFetching) {
-        setLastItems(items)
+        setLastItem(items[items.length - 1])
       }
     }
 
@@ -68,7 +80,7 @@ export default function HistoryList({
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [isFetching])
+  }, [isFetching, items])
 
   return (
     <TableContainer component={Paper} sx={{ marginBottom: "100px" }}>
