@@ -14,21 +14,27 @@ export const SignIn = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const signInWithGoogle = () => {
-    signInWithRedirect(auth, new GoogleAuthProvider())
+    signInWithRedirect(auth, new GoogleAuthProvider()).catch((error) => {
+      console.error("Error during sign-in with redirect:", error)
+    })
   }
 
   useEffect(() => {
-    getRedirectResult(auth).then((result) => {
-      if (result !== null) {
-        const user = result.user
-        dispatch(
-          login({
-            uid: user.uid,
-          }),
-        )
-        navigate("/")
-      }
-    })
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result !== null) {
+          const user = result.user
+          dispatch(
+            login({
+              uid: user.uid,
+            }),
+          )
+          void navigate("/")
+        }
+      })
+      .catch((error) => {
+        console.error("Error during getRedirectResult:", error)
+      })
   }, [])
 
   return (

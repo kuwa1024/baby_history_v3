@@ -1,7 +1,7 @@
 import { Box } from "@mui/material"
-import { Control } from "react-hook-form"
-import { SelectElement } from "react-hook-form-mui"
+import { Control, SelectElement } from "react-hook-form-mui"
 
+/* eslint @typescript-eslint/no-explicit-any: 0 */
 export interface SelectProps {
   control: Control<any>
   id: string

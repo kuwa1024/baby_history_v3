@@ -60,7 +60,7 @@ export default function HistoryAddForm({
       }).unwrap()
       reset()
       setNotification({ message: "登録しました", severity: "success" })
-    } catch (err) {
+    } catch {
       setNotification({ message: "登録に失敗しました", severity: "error" })
     }
   }
@@ -70,7 +70,7 @@ export default function HistoryAddForm({
       sx={{ position: "fixed", bottom: 10, left: 0, right: 0 }}
       elevation={3}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
         <Grid2 container spacing={1}>
           <Grid2 size={4} sx={{ padding: "20px" }}>
             <Select {...categorySelectProps} />

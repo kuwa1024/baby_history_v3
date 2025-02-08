@@ -37,22 +37,23 @@ export const historySlice = createApi({
           )
           queryConstraints.push(startAfter(lastItemDate))
         }
-        let q = query(itemRef, ...queryConstraints)
+        const q = query(itemRef, ...queryConstraints)
         const querySnapshot = await getDocs(q)
-        let items: Item[] = []
+        const items: Item[] = []
         querySnapshot.forEach((doc) => {
+          const data = doc.data()
           items.push({
             id: doc.id,
-            category: doc.data().category,
-            categorySub: doc.data().categorySub,
+            category: data.category as string,
+            categorySub: data.categorySub as string,
             createDatetime: new Date(
-              doc.data().createDatetime.seconds * 1000,
+              (data.createDatetime as Timestamp).seconds * 1000,
             ).toLocaleString(),
           } as Item)
         })
         return { data: items }
       },
-      providesTags: (result, error, lastItem) =>
+      providesTags: (result) =>
         result
           ? [
               ...result.map(({ id }) => ({ type: "Item", id }) as const),

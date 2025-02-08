@@ -13,7 +13,7 @@ import { useEffect, useState } from "react"
 import { NotificationProps } from "../../components/Notification"
 import { Item, useGetItemsQuery } from "./historySlice"
 
-const StyledTableRow = styled(TableRow)(({}) => ({
+const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
     backgroundColor: "whitesmoke",
   },
@@ -39,7 +39,6 @@ export default function HistoryList({
     isLoading,
     isFetching,
     isError,
-    refetch,
   } = useGetItemsQuery({ lastItem })
 
   useEffect(() => {

@@ -17,8 +17,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig)
-export const auth = getAuth()
-export const db = getFirestore()
+export const auth = getAuth(firebaseApp)
+export const db = getFirestore(firebaseApp)
 
 const isEmulating = window.location.hostname === "localhost"
 if (isEmulating) {

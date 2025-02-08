@@ -6,10 +6,14 @@ import { logout } from "./authSlice"
 
 export const SignOut = () => {
   const dispatch = useAppDispatch()
-  const handleSignOut = async () => {
-    await signOut(auth).then(() => {
-      dispatch(logout())
-    })
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch(logout())
+      })
+      .catch((error) => {
+        console.error("Sign out error: ", error)
+      })
   }
 
   return (
