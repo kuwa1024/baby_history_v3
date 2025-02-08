@@ -12,7 +12,7 @@ import {
 import storage from "redux-persist/es/storage"
 import authReducer from "../features/auth/authSlice"
 import { historySlice } from "../features/history/historySlice"
-import itemsReducer from "../features/history/itemsSlice"
+import lastItemsReducer from "../features/history/lastItemsSlice"
 
 const persistConfig = {
   key: "root",
@@ -23,7 +23,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  items: itemsReducer,
+  lastItems: lastItemsReducer,
   [historySlice.reducerPath]: historySlice.reducer,
 })
 const persistedReducer = persistReducer(persistConfig, rootReducer)

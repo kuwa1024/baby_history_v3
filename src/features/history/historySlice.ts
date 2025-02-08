@@ -25,13 +25,14 @@ export const historySlice = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Item"],
   endpoints: (builder) => ({
-    getItems: builder.query<Item[], { lastItem?: Item }>({
-      queryFn: async ({ lastItem }) => {
+    getItems: builder.query<Item[], { lastItems: Item[] }>({
+      queryFn: async ({ lastItems }) => {
         const itemRef = collection(db, "items")
         const queryConstraints = []
         queryConstraints.push(orderBy("createDatetime", "desc"))
         queryConstraints.push(limit(20))
-        if (lastItem) {
+        if (lastItems.length > 0) {
+          const lastItem = lastItems[lastItems.length - 1]
           const lastItemDate = Timestamp.fromDate(
             new Date(lastItem.createDatetime),
           )
@@ -39,7 +40,7 @@ export const historySlice = createApi({
         }
         const q = query(itemRef, ...queryConstraints)
         const querySnapshot = await getDocs(q)
-        const items: Item[] = []
+        const items: Item[] = [...lastItems]
         querySnapshot.forEach((doc) => {
           const data = doc.data()
           items.push({

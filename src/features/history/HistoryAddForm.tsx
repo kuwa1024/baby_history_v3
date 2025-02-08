@@ -7,7 +7,7 @@ import { Select, SelectProps } from "../../components/Select"
 import { category } from "../../consts/category"
 import { categorySub } from "../../consts/categorySub"
 import { useAddNewItemMutation } from "./historySlice"
-import { resetItems } from "./itemsSlice"
+import { resetLastItems } from "./lastItemsSlice"
 
 interface Inputs {
   category: string
@@ -62,7 +62,7 @@ export default function HistoryAddForm({
         categorySub: data.categorySub ?? "",
       }).unwrap()
       reset()
-      dispatch(resetItems())
+      dispatch(resetLastItems())
       setNotification({ message: "登録しました", severity: "success" })
     } catch {
       setNotification({ message: "登録に失敗しました", severity: "error" })
