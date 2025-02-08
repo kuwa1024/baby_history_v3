@@ -64,6 +64,7 @@ export default function HistoryAddForm({
       reset()
       dispatch(resetLastItems())
       setNotification({ message: "登録しました", severity: "success" })
+      window.scrollTo({ top: 0, behavior: "smooth" })
     } catch {
       setNotification({ message: "登録に失敗しました", severity: "error" })
     }

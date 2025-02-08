@@ -6,20 +6,26 @@
 
 v2はメンテができなくなったので、学習用にreduxを使ってリプレース
 
-# パッケージインストール
+# 開発用動作
+
+## パッケージインストール
 
 ```
 yarn install
 ```
 
-# 起動
+## 起動
 
 ```
 yarn dev
 ```
 
-# firebase ローカル環境起動コマンド
+## firebase ローカル環境起動コマンド
 
 ```
 firebase emulators:start --import=./emulators.local --export-on-exit
 ```
+
+## メモ
+
+distディレクトリはlintの邪魔になるので消す
