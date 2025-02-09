@@ -1,26 +1,26 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Item } from "./historySlice"
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Item } from './historySlice';
 
 interface lastItemsState {
-  lastItems: Item[]
+  lastItems: Item[];
 }
 
 const initialState: lastItemsState = {
   lastItems: [],
-}
+};
 
 const lastItemsSlice = createSlice({
-  name: "items",
+  name: 'items',
   initialState,
   reducers: {
     setLastItems(state, action: PayloadAction<Item[]>) {
-      state.lastItems = action.payload
+      state.lastItems = action.payload;
     },
     resetLastItems(state) {
-      state.lastItems = []
+      state.lastItems = [];
     },
   },
-})
+});
 
-export const { setLastItems, resetLastItems } = lastItemsSlice.actions
-export default lastItemsSlice.reducer
+export const { setLastItems, resetLastItems } = lastItemsSlice.actions;
+export default lastItemsSlice.reducer;

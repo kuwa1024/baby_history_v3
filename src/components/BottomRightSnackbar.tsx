@@ -1,37 +1,35 @@
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar"
-import * as React from "react"
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import * as React from 'react';
 
 interface State extends SnackbarOrigin {
-  open: boolean
+  open: boolean;
 }
 
 export default function BottomRightSnackbar() {
   const [state, setState] = React.useState<State>({
     open: false,
-    vertical: "top",
-    horizontal: "center",
-  })
-  const { vertical, horizontal, open } = state
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
 
   const handleClick = (newState: SnackbarOrigin) => () => {
-    setState({ ...newState, open: true })
-  }
+    setState({ ...newState, open: true });
+  };
 
   const handleClose = () => {
-    setState({ ...state, open: false })
-  }
+    setState({ ...state, open: false });
+  };
 
   const buttons = (
     <React.Fragment>
-      <Button
-        onClick={handleClick({ vertical: "bottom", horizontal: "right" })}
-      >
+      <Button onClick={handleClick({ vertical: 'bottom', horizontal: 'right' })}>
         Bottom-Right
       </Button>
     </React.Fragment>
-  )
+  );
 
   return (
     <Box sx={{ width: 500 }}>
@@ -44,5 +42,5 @@ export default function BottomRightSnackbar() {
         key={vertical + horizontal}
       />
     </Box>
-  )
+  );
 }

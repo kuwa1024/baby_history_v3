@@ -1,34 +1,31 @@
-import { Alert } from "@mui/material"
-import Snackbar from "@mui/material/Snackbar"
-import { useEffect, useState } from "react"
+import { Alert } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import { useEffect, useState } from 'react';
 
 export interface NotificationProps {
-  message: string
-  severity?: "success" | "error" | "warning" | "info"
+  message: string;
+  severity?: 'success' | 'error' | 'warning' | 'info';
 }
 
-export default function Notification({
-  message,
-  severity = "success",
-}: NotificationProps) {
-  const [open, setOpen] = useState(false)
+export default function Notification({ message, severity = 'success' }: NotificationProps) {
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (message) {
-      setOpen(true)
+      setOpen(true);
     }
-  }, [message])
+  }, [message]);
 
   return (
     <div>
       <Snackbar
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
+          vertical: 'top',
+          horizontal: 'center',
         }}
         open={open}
         autoHideDuration={3000}
@@ -39,5 +36,5 @@ export default function Notification({
         </Alert>
       </Snackbar>
     </div>
-  )
+  );
 }

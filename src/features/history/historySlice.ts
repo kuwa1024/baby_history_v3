@@ -1,4 +1,4 @@
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   addDoc,
   collection,
@@ -8,67 +8,65 @@ import {
   query,
   startAfter,
   Timestamp,
-} from "firebase/firestore"
-import { db } from "../../app/firebase"
+} from 'firebase/firestore';
+import { db } from '../../app/firebase';
 
 export interface Item {
-  id: string
-  category: string
-  categorySub: string
-  createDatetime: string
+  id: string;
+  category: string;
+  categorySub: string;
+  createDatetime: string;
 }
 
-type NewItem = Pick<Item, "category" | "categorySub">
+type NewItem = Pick<Item, 'category' | 'categorySub'>;
 
 export const historySlice = createApi({
-  reducerPath: "history",
+  reducerPath: 'history',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["Item"],
+  tagTypes: ['Item'],
   endpoints: (builder) => ({
     getItems: builder.query<Item[], { lastItems: Item[] }>({
       queryFn: async ({ lastItems }) => {
-        const itemRef = collection(db, "items")
-        const queryConstraints = []
-        queryConstraints.push(orderBy("createDatetime", "desc"))
-        queryConstraints.push(limit(20))
+        const itemRef = collection(db, 'items');
+        const queryConstraints = [];
+        queryConstraints.push(orderBy('createDatetime', 'desc'));
+        queryConstraints.push(limit(20));
         if (lastItems.length > 0) {
-          const lastItem = lastItems[lastItems.length - 1]
-          const lastItemDate = Timestamp.fromDate(
-            new Date(lastItem.createDatetime),
-          )
-          queryConstraints.push(startAfter(lastItemDate))
+          const lastItem = lastItems[lastItems.length - 1];
+          const lastItemDate = Timestamp.fromDate(new Date(lastItem.createDatetime));
+          queryConstraints.push(startAfter(lastItemDate));
         }
-        const q = query(itemRef, ...queryConstraints)
-        const querySnapshot = await getDocs(q)
-        const items: Item[] = [...lastItems]
+        const q = query(itemRef, ...queryConstraints);
+        const querySnapshot = await getDocs(q);
+        const items: Item[] = [...lastItems];
         querySnapshot.forEach((doc) => {
-          const data = doc.data()
+          const data = doc.data();
           items.push({
             id: doc.id,
             category: data.category as string,
             categorySub: data.categorySub as string,
             createDatetime: new Date(
-              (data.createDatetime as Timestamp).seconds * 1000,
+              (data.createDatetime as Timestamp).seconds * 1000
             ).toLocaleString(),
-          } as Item)
-        })
-        return { data: items }
+          } as Item);
+        });
+        return { data: items };
       },
-      providesTags: ["Item"],
+      providesTags: ['Item'],
     }),
     addNewItem: builder.mutation<string, NewItem>({
       queryFn: async (item) => {
         // テスト用遅延ロード
         // await new Promise((resolve) => setTimeout(resolve, 2000))
-        const docRef = await addDoc(collection(db, "items"), {
+        const docRef = await addDoc(collection(db, 'items'), {
           ...item,
           createDatetime: Timestamp.fromDate(new Date()),
-        })
-        return { data: docRef.id }
+        });
+        return { data: docRef.id };
       },
-      invalidatesTags: ["Item"],
+      invalidatesTags: ['Item'],
     }),
   }),
-})
+});
 
-export const { useGetItemsQuery, useAddNewItemMutation } = historySlice
+export const { useGetItemsQuery, useAddNewItemMutation } = historySlice;
