@@ -16,12 +16,29 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
+const LoginRedirect = ({ children }: { children: React.ReactNode }) => {
+  const uid = useAppSelector(selectCurrentUid);
+
+  if (uid) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
 const App = () => {
   return (
     <BrowserRouter>
       <Container maxWidth="md">
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
+          <Route
+            path="/signin"
+            element={
+              <LoginRedirect>
+                <SignIn />
+              </LoginRedirect>
+            }
+          />
           <Route
             path="/*"
             element={
