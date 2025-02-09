@@ -8,6 +8,7 @@ import {
   query,
   startAfter,
   Timestamp,
+  where,
 } from 'firebase/firestore';
 import { db } from '../../app/firebase';
 
@@ -25,12 +26,15 @@ export const historySlice = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ['Item'],
   endpoints: (builder) => ({
-    getItems: builder.query<Item[], { lastItems: Item[] }>({
-      queryFn: async ({ lastItems }) => {
+    getItems: builder.query<Item[], { lastItems: Item[]; search?: string }>({
+      queryFn: async ({ lastItems, search }) => {
         const itemRef = collection(db, 'items');
         const queryConstraints = [];
         queryConstraints.push(orderBy('createDatetime', 'desc'));
         queryConstraints.push(limit(20));
+        if (search) {
+          queryConstraints.push(where('category', '==', search));
+        }
         if (lastItems.length > 0) {
           const lastItem = lastItems[lastItems.length - 1];
           const lastItemDate = Timestamp.fromDate(new Date(lastItem.createDatetime));

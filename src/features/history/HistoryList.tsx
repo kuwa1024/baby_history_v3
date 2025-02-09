@@ -13,8 +13,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { NotificationProps } from '../../components/Notification';
+import { setLastItems } from './historyParamSlice';
 import { useGetItemsQuery } from './historySlice';
-import { setLastItems } from './lastItemsSlice';
 
 const StyledTableRow = styled(TableRow)(() => ({
   '&:nth-of-type(odd)': {
@@ -33,8 +33,14 @@ interface HistoryListProps {
 
 export default function HistoryList({ setIsLoading, setNotification }: HistoryListProps) {
   const dispatch = useDispatch();
-  const lastItems = useSelector((state: RootState) => state.lastItems.lastItems);
-  const { data: items = [], isLoading, isFetching, isError } = useGetItemsQuery({ lastItems });
+  const lastItems = useSelector((state: RootState) => state.historyParam.lastItems);
+  const search = useSelector((state: RootState) => state.historyParam.search);
+  const {
+    data: items = [],
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetItemsQuery({ lastItems, search });
 
   useEffect(() => {
     setIsLoading(isLoading || isFetching);

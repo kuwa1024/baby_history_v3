@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import FabSearch from '../../components/FabSearch';
 import Loading from '../../components/Loading';
 import Notification, { NotificationProps } from '../../components/Notification';
 import ScrollTop from '../../components/ScrollTop';
 import HistoryAddForm from './HistoryAddForm';
 import HistoryList from './HistoryList';
+import HistorySearchForm from './HistorySearchForm';
 
 export const HistoryPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export const HistoryPage = () => {
       <Loading open={isLoading} />
       <Notification message={notification.message} severity={notification.severity} />
       <HistoryList setIsLoading={setIsLoading} setNotification={setNotification} />
-      <FabSearch />
+      <HistorySearchForm />
       <ScrollTop />
       <HistoryAddForm setIsLoading={setIsLoading} setNotification={setNotification} />
     </div>

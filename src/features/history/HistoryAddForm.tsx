@@ -6,8 +6,8 @@ import { NotificationProps } from '../../components/Notification';
 import { Select, SelectProps } from '../../components/Select';
 import { category } from '../../consts/category';
 import { categorySub } from '../../consts/categorySub';
+import { resetLastItems } from './historyParamSlice';
 import { useAddNewItemMutation } from './historySlice';
-import { resetLastItems } from './lastItemsSlice';
 
 interface Inputs {
   category: string;
