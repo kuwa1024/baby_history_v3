@@ -2,9 +2,9 @@ import { Button } from '@mui/material';
 import { getRedirectResult, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../app/firebase';
-import { useAppDispatch } from '../../app/hooks';
-import { login } from './authSlice';
+import { auth } from '@/app/firebase';
+import { useAppDispatch } from '@/app/hooks';
+import { login } from '@/features/auth/authSlice';
 
 export const SignIn = () => {
   const dispatch = useAppDispatch();

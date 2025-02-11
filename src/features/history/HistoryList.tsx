@@ -11,10 +11,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import { NotificationProps } from '../../components/Notification';
-import { setLastItems } from './historyParamSlice';
-import { useGetItemsQuery } from './historySlice';
+import { RootState } from '@/app/store';
+import { NotificationProps } from '@/components/Notification';
+import { setLastItems } from '@/features/history/historyParamSlice';
+import { useGetItemsQuery } from '@/features/history/historySlice';
 
 const StyledTableRow = styled(TableRow)(() => ({
   '&:nth-of-type(odd)': {

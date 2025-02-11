@@ -1,10 +1,10 @@
 import { Container } from '@mui/material';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { useAppSelector } from './app/hooks';
-import { selectCurrentUid } from './features/auth/authSlice';
-import { SignIn } from './features/auth/SignIn';
-import { SignOut } from './features/auth/SignOut';
-import { HistoryPage } from './features/history/HistoryPage';
+import { useAppSelector } from '@/app/hooks';
+import { selectCurrentUid } from '@/features/auth/authSlice';
+import { SignIn } from '@/features/auth/SignIn';
+import { SignOut } from '@/features/auth/SignOut';
+import { HistoryPage } from '@/features/history/HistoryPage';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const uid = useAppSelector(selectCurrentUid);

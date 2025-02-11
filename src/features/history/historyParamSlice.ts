@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Item } from './historySlice';
+import { Item } from '@/features/history/historySlice';
 
 interface historyParamState {
   lastItems: Item[];

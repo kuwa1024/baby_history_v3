@@ -2,12 +2,12 @@ import { Button, Grid2, Paper } from '@mui/material';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useDispatch } from 'react-redux';
-import { NotificationProps } from '../../components/Notification';
-import { Select, SelectProps } from '../../components/Select';
-import { category } from '../../consts/category';
-import { categorySub } from '../../consts/categorySub';
-import { resetLastItems } from './historyParamSlice';
-import { useAddNewItemMutation } from './historySlice';
+import { NotificationProps } from '@/components/Notification';
+import { Select, SelectProps } from '@/components/Select';
+import { category } from '@/consts/category';
+import { categorySub } from '@/consts/categorySub';
+import { resetLastItems } from '@/features/history/historyParamSlice';
+import { useAddNewItemMutation } from '@/features/history/historySlice';
 
 interface Inputs {
   category: string;

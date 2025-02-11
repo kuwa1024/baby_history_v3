@@ -10,7 +10,7 @@ import {
   Timestamp,
   where,
 } from 'firebase/firestore';
-import { db } from '../../app/firebase';
+import { db } from '@/app/firebase';
 
 export interface Item {
   id: string;

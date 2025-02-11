@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Loading from '../../components/Loading';
-import Notification, { NotificationProps } from '../../components/Notification';
-import ScrollTop from '../../components/ScrollTop';
-import HistoryAddForm from './HistoryAddForm';
-import HistoryList from './HistoryList';
-import HistorySearchForm from './HistorySearchForm';
+import Loading from '@/components/Loading';
+import Notification, { NotificationProps } from '@/components/Notification';
+import ScrollTop from '@/components/ScrollTop';
+import HistoryAddForm from '@/features/history/HistoryAddForm';
+import HistoryList from '@/features/history/HistoryList';
+import HistorySearchForm from '@/features/history/HistorySearchForm';
 
 export const HistoryPage = () => {
   const [isLoading, setIsLoading] = useState(false);

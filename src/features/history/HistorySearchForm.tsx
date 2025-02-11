@@ -4,9 +4,9 @@ import Fab from '@mui/material/Fab';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useDispatch } from 'react-redux';
-import { Select, SelectProps } from '../../components/Select';
-import { category } from '../../consts/category';
-import { setSearch } from './historyParamSlice';
+import { Select, SelectProps } from '@/components/Select';
+import { category } from '@/consts/category';
+import { setSearch } from '@/features/history/historyParamSlice';
 
 interface Inputs {
   category: string;

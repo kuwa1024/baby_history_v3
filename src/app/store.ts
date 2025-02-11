@@ -10,9 +10,9 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
-import authReducer from '../features/auth/authSlice';
-import historyParamReducer from '../features/history/historyParamSlice';
-import { historySlice } from '../features/history/historySlice';
+import authReducer from '@/features/auth/authSlice';
+import historyParamReducer from '@/features/history/historyParamSlice';
+import { historySlice } from '@/features/history/historySlice';
 
 const persistConfig = {
   key: 'root',
