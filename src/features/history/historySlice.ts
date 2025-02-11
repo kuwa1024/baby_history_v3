@@ -2,10 +2,13 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   limit,
   orderBy,
   query,
+  setDoc,
   startAfter,
   Timestamp,
   where,
@@ -70,7 +73,30 @@ export const historySlice = createApi({
       },
       invalidatesTags: ['Item'],
     }),
+    editItem: builder.mutation<string, Item>({
+      queryFn: async (item) => {
+        await setDoc(doc(db, 'items', item.id), {
+          category: item.category,
+          categorySub: item.categorySub,
+          createDatetime: Timestamp.fromDate(new Date(item.createDatetime)),
+        });
+        return { data: item.id };
+      },
+      invalidatesTags: ['Item'],
+    }),
+    deleteItem: builder.mutation<string, string>({
+      queryFn: async (id) => {
+        await deleteDoc(doc(db, 'items', id));
+        return { data: id };
+      },
+      invalidatesTags: ['Item'],
+    }),
   }),
 });
 
-export const { useGetItemsQuery, useAddNewItemMutation } = historySlice;
+export const {
+  useGetItemsQuery,
+  useAddNewItemMutation,
+  useEditItemMutation,
+  useDeleteItemMutation,
+} = historySlice;

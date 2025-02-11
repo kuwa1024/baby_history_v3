@@ -124,7 +124,7 @@ const categorySub1: categorySub = {
   id: 'categorySub',
   label: 'サブカテゴリー',
   items: categorySubItem1,
-  required: true,
+  required: false,
 };
 
 const categorySub2: categorySub = {
