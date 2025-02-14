@@ -1,5 +1,4 @@
 import { Container } from '@mui/material';
-import { padding } from '@mui/system';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
 import { selectCurrentUid } from '@/features/auth/authSlice';
