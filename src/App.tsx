@@ -1,4 +1,5 @@
 import { Container } from '@mui/material';
+import { padding } from '@mui/system';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
 import { selectCurrentUid } from '@/features/auth/authSlice';
@@ -29,7 +30,7 @@ const LoginRedirect = ({ children }: { children: React.ReactNode }) => {
 const App = () => {
   return (
     <BrowserRouter>
-      <Container maxWidth="md">
+      <Container maxWidth="md" sx={{ padding: '0px' }}>
         <Routes>
           <Route
             path="/signin"
