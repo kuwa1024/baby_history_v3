@@ -1,5 +1,5 @@
 import { Button, Grid2, Paper } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useDispatch } from 'react-redux';
 import { NotificationProps } from '@/components/Notification';
@@ -22,12 +22,11 @@ interface HistoryAddFormProps {
 export default function HistoryAddForm({ setIsLoading, setNotification }: HistoryAddFormProps) {
   const dispatch = useDispatch();
   const [addNewItem, { isLoading }] = useAddNewItemMutation();
-
-  useEffect(() => {
-    setIsLoading(isLoading);
-  }, [isLoading]);
-
-  const { control, watch, handleSubmit, reset, register, unregister } = useForm<Inputs>();
+  const { control, watch, handleSubmit, reset, register, unregister, setValue } = useForm<Inputs>();
+  const [categorySubSelectProps, setCategorySubSelectProps] = useState<SelectProps>({
+    ...categorySub[0],
+    control: control,
+  });
 
   const categorySelectProps: SelectProps = {
     ...category,
@@ -39,15 +38,17 @@ export default function HistoryAddForm({ setIsLoading, setNotification }: Histor
     ? category.relations[category.items.findIndex((item) => item === categoryValue)]
     : 0;
   const categorySubSelect = categorySub[index];
-  const categorySubSelectProps: SelectProps = {
-    ...categorySubSelect,
-    control: control,
-  };
 
   useEffect(() => {
+    setValue('categorySub', '');
     unregister('categorySub');
+    setCategorySubSelectProps({ ...categorySubSelect, control: control });
     register('categorySub');
   }, [categoryValue]);
+
+  useEffect(() => {
+    setIsLoading(isLoading);
+  }, [isLoading]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
