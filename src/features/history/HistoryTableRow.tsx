@@ -1,7 +1,7 @@
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Grid2, IconButton, TableCell } from '@mui/material';
+import { IconButton, Stack, TableCell } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NotificationProps } from '@/components/Notification';
@@ -67,8 +67,10 @@ export default function HistoryTableRow({
 
   return (
     <>
-      <TableCell scope="row">{formatDate(item.createDatetime)}</TableCell>
-      <TableCell>
+      <TableCell scope="row" sx={{ padding: '0px' }} align="center">
+        {formatDate(item.createDatetime)}
+      </TableCell>
+      <TableCell sx={{ padding: '0px' }} align="center">
         {item.category}{' '}
         {item.category.match(/母乳/) && item.categorySub == '' ? (
           <IconButton onClick={() => void onAlarm()}>
@@ -78,19 +80,15 @@ export default function HistoryTableRow({
           item.categorySub
         )}
       </TableCell>
-      <TableCell align="center">
-        <Grid2 container sx={{ marginLeft: '20%', marginRight: '20%' }}>
-          <Grid2 size={6}>
-            <Button onClick={() => void onEdit()}>
-              <EditIcon color="action" />
-            </Button>
-          </Grid2>
-          <Grid2 size={6}>
-            <Button onClick={() => void onDelete()}>
-              <DeleteIcon color="action" />
-            </Button>
-          </Grid2>
-        </Grid2>
+      <TableCell sx={{ padding: '0px' }} align="center">
+        <Stack direction="row">
+          <IconButton onClick={() => void onEdit()}>
+            <EditIcon color="action" />
+          </IconButton>
+          <IconButton onClick={() => void onDelete()}>
+            <DeleteIcon color="action" />
+          </IconButton>
+        </Stack>
       </TableCell>
     </>
   );

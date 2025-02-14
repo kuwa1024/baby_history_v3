@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Grid2, Button, TableCell } from '@mui/material';
+import { TableCell, Stack, IconButton } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -62,7 +62,7 @@ export default function HistoryTableEditRow({ item, setEditCell, form }: History
 
   return (
     <>
-      <TableCell scope="row">
+      <TableCell scope="row" sx={{ padding: '0px' }} align="center">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Controller
             name="createDatetime"
@@ -71,7 +71,7 @@ export default function HistoryTableEditRow({ item, setEditCell, form }: History
             render={({ field }) => (
               <DateTimePicker
                 {...field}
-                label="createDatetime"
+                label="日時"
                 format="MM/DD HH:mm"
                 value={dayjs(field.value)}
                 inputRef={field.ref}
@@ -84,29 +84,21 @@ export default function HistoryTableEditRow({ item, setEditCell, form }: History
           />
         </LocalizationProvider>
       </TableCell>
-      <TableCell>
-        <Grid2 container>
-          <Grid2 size={6}>
-            <Select {...categorySelectProps} />
-          </Grid2>
-          <Grid2 size={6}>
-            <Select {...categorySubSelectProps} />
-          </Grid2>
-        </Grid2>
+      <TableCell sx={{ padding: '0px' }} align="center">
+        <Stack direction="row">
+          <Select {...categorySelectProps} />
+          <Select {...categorySubSelectProps} />
+        </Stack>
       </TableCell>
-      <TableCell align="center">
-        <Grid2 container sx={{ marginLeft: '20%', marginRight: '20%' }}>
-          <Grid2 size={6}>
-            <Button type="submit">
-              <CheckIcon color="action" />
-            </Button>
-          </Grid2>
-          <Grid2 size={6}>
-            <Button onClick={() => void onClear()}>
-              <ClearIcon color="action" />
-            </Button>
-          </Grid2>
-        </Grid2>
+      <TableCell sx={{ padding: '0px' }} align="center">
+        <Stack direction="row">
+          <IconButton type="submit">
+            <CheckIcon color="action" />
+          </IconButton>
+          <IconButton onClick={() => void onClear()}>
+            <ClearIcon color="action" />
+          </IconButton>
+        </Stack>
       </TableCell>
     </>
   );

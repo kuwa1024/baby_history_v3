@@ -80,9 +80,13 @@ export default function HistoryList({ setIsLoading, setNotification }: HistoryLi
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ width: '40%' }}>日時</TableCell>
-              <TableCell sx={{ width: '40%' }}>行動</TableCell>
-              <TableCell sx={{ width: '20%' }} align="center">
+              <TableCell sx={{ width: '45%' }} align="center">
+                日時
+              </TableCell>
+              <TableCell sx={{ width: '45%' }} align="center">
+                行動
+              </TableCell>
+              <TableCell sx={{ width: '10%' }} align="center">
                 操作
               </TableCell>
             </TableRow>

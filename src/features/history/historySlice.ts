@@ -34,7 +34,7 @@ export const historySlice = createApi({
         const itemRef = collection(db, 'items');
         const queryConstraints = [];
         queryConstraints.push(orderBy('createDatetime', 'desc'));
-        queryConstraints.push(limit(20));
+        queryConstraints.push(limit(30));
         if (search) {
           queryConstraints.push(where('category', '==', search));
         }
