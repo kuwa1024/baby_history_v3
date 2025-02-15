@@ -8,10 +8,10 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form-mui';
 import { Select, SelectProps } from '@/components/Select';
-import { category } from '@/consts/category';
-import { categorySub } from '@/consts/categorySub';
 import { Inputs } from '@/features/history/HistoryList';
 import { Item } from '@/features/history/historySlice';
+import { category } from '@/utils/category';
+import { categorySub } from '@/utils/categorySub';
 
 interface HistoryTableEditRowProps {
   item: Item;

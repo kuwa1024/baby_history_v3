@@ -5,10 +5,10 @@ import { useDispatch } from 'react-redux';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { Select, SelectProps } from '@/components/Select';
-import { category } from '@/consts/category';
-import { categorySub } from '@/consts/categorySub';
 import { resetLastItems } from '@/features/history/historyParamSlice';
 import { useAddNewItemMutation } from '@/features/history/historySlice';
+import { category } from '@/utils/category';
+import { categorySub } from '@/utils/categorySub';
 
 interface Inputs {
   category: string;

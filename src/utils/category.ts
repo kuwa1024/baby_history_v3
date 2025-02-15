@@ -3,7 +3,7 @@ interface category {
   label: string;
   items: string[];
   relations: number[];
-  required?: boolean;
+  required: boolean;
 }
 
 const item: string[] = ['母乳', '母乳(右)', '母乳(左)', 'ミルク', '搾乳', 'おしっこ', 'うんこ'];
