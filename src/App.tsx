@@ -1,6 +1,7 @@
 import { Container } from '@mui/material';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
+import Loading from '@/components/loading/Loading';
 import Notification from '@/components/notification/Notification';
 import { selectCurrentUid } from '@/features/auth/authSlice';
 import { SignIn } from '@/features/auth/SignIn';
@@ -31,6 +32,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Container maxWidth="md" sx={{ padding: '0px' }}>
+        <Loading />
         <Notification />
         <Routes>
           <Route

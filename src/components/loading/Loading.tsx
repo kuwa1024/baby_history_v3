@@ -1,7 +1,10 @@
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
-export default function Loading({ open = false }) {
+export default function Loading() {
+  const open = useSelector((state: RootState) => state.loading.open);
   return (
     <div>
       <Backdrop sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })} open={open}>

@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { IconButton, Stack, TableCell } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { resetLastItems } from '@/features/history/historyParamSlice';
 import { Item, useDeleteItemMutation, useEditItemMutation } from '@/features/history/historySlice';
@@ -12,16 +13,15 @@ import { formatDate } from '@/utils/format';
 interface HistoryTableRowProps {
   item: Item;
   setEditCell: (id: string) => void;
-  setIsLoading: (isLoading: boolean) => void;
 }
 
-export default function HistoryTableRow({ item, setEditCell, setIsLoading }: HistoryTableRowProps) {
+export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowProps) {
   const dispatch = useDispatch();
   const [editItem, { isLoading: isLoadingEdit }] = useEditItemMutation();
   const [deleteItem, { isLoading: isLoadingDelete }] = useDeleteItemMutation();
 
   useEffect(() => {
-    setIsLoading(isLoadingEdit || isLoadingDelete);
+    dispatch(setLoading(isLoadingEdit || isLoadingDelete));
   }, [isLoadingEdit, isLoadingDelete]);
 
   const onAlarm = async () => {

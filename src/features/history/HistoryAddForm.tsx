@@ -2,6 +2,7 @@ import { Button, Grid2, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useDispatch } from 'react-redux';
+import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { Select, SelectProps } from '@/components/Select';
 import { category } from '@/consts/category';
@@ -14,11 +15,7 @@ interface Inputs {
   categorySub: string;
 }
 
-interface HistoryAddFormProps {
-  setIsLoading: (isLoading: boolean) => void;
-}
-
-export default function HistoryAddForm({ setIsLoading }: HistoryAddFormProps) {
+export default function HistoryAddForm() {
   const dispatch = useDispatch();
   const [addNewItem, { isLoading }] = useAddNewItemMutation();
   const { control, watch, handleSubmit, reset, register, unregister, setValue } = useForm<Inputs>();
@@ -46,7 +43,7 @@ export default function HistoryAddForm({ setIsLoading }: HistoryAddFormProps) {
   }, [categoryValue]);
 
   useEffect(() => {
-    setIsLoading(isLoading);
+    dispatch(setLoading(isLoading));
   }, [isLoading]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
+import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { setLastItems } from '@/features/history/historyParamSlice';
 import { useEditItemMutation, useGetItemsQuery } from '@/features/history/historySlice';
@@ -27,11 +28,7 @@ export interface Inputs {
   categorySub: string;
 }
 
-interface HistoryListProps {
-  setIsLoading: (isLoading: boolean) => void;
-}
-
-export default function HistoryList({ setIsLoading }: HistoryListProps) {
+export default function HistoryList() {
   const dispatch = useDispatch();
   const lastItems = useSelector((state: RootState) => state.historyParam.lastItems);
   const search = useSelector((state: RootState) => state.historyParam.search);
@@ -41,7 +38,7 @@ export default function HistoryList({ setIsLoading }: HistoryListProps) {
   const form = useForm<Inputs>();
 
   useEffect(() => {
-    setIsLoading(isLoading);
+    dispatch(setLoading(isLoading));
   }, [isLoading]);
 
   useEffect(() => {
@@ -98,11 +95,7 @@ export default function HistoryList({ setIsLoading }: HistoryListProps) {
                 {editCell === item.id ? (
                   <HistoryTableEditRow item={item} setEditCell={setEditCell} form={form} />
                 ) : (
-                  <HistoryTableRow
-                    item={item}
-                    setEditCell={setEditCell}
-                    setIsLoading={setIsLoading}
-                  />
+                  <HistoryTableRow item={item} setEditCell={setEditCell} />
                 )}
               </StyledTableRow>
             ))}
