@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
-import { NotificationProps } from '@/components/Notification';
+import { showNotification } from '@/components/notification/notificationSlice';
 import { setLastItems } from '@/features/history/historyParamSlice';
 import { useEditItemMutation, useGetItemsQuery } from '@/features/history/historySlice';
 import HistoryTableEditRow from '@/features/history/HistoryTableEditRow';
@@ -29,10 +29,9 @@ export interface Inputs {
 
 interface HistoryListProps {
   setIsLoading: (isLoading: boolean) => void;
-  setNotification: (notification: NotificationProps) => void;
 }
 
-export default function HistoryList({ setIsLoading, setNotification }: HistoryListProps) {
+export default function HistoryList({ setIsLoading }: HistoryListProps) {
   const dispatch = useDispatch();
   const lastItems = useSelector((state: RootState) => state.historyParam.lastItems);
   const search = useSelector((state: RootState) => state.historyParam.search);
@@ -47,10 +46,12 @@ export default function HistoryList({ setIsLoading, setNotification }: HistoryLi
 
   useEffect(() => {
     if (isError) {
-      setNotification({
-        message: 'データの取得に失敗しました',
-        severity: 'error',
-      });
+      dispatch(
+        showNotification({
+          message: 'データの取得に失敗しました',
+          severity: 'error',
+        })
+      );
     }
   }, [isError]);
 
@@ -70,7 +71,7 @@ export default function HistoryList({ setIsLoading, setNotification }: HistoryLi
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await editItem({ ...data, id: editCell });
-    setNotification({ message: '更新しました', severity: 'success' });
+    dispatch(showNotification({ message: '更新しました', severity: 'success' }));
     setEditCell('');
   };
 
@@ -101,7 +102,6 @@ export default function HistoryList({ setIsLoading, setNotification }: HistoryLi
                     item={item}
                     setEditCell={setEditCell}
                     setIsLoading={setIsLoading}
-                    setNotification={setNotification}
                   />
                 )}
               </StyledTableRow>

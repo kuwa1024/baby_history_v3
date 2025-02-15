@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { IconButton, Stack, TableCell } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { NotificationProps } from '@/components/Notification';
+import { showNotification } from '@/components/notification/notificationSlice';
 import { resetLastItems } from '@/features/history/historyParamSlice';
 import { Item, useDeleteItemMutation, useEditItemMutation } from '@/features/history/historySlice';
 import { formatDate } from '@/utils/format';
@@ -13,15 +13,9 @@ interface HistoryTableRowProps {
   item: Item;
   setEditCell: (id: string) => void;
   setIsLoading: (isLoading: boolean) => void;
-  setNotification: (notification: NotificationProps) => void;
 }
 
-export default function HistoryTableRow({
-  item,
-  setEditCell,
-  setIsLoading,
-  setNotification,
-}: HistoryTableRowProps) {
+export default function HistoryTableRow({ item, setEditCell, setIsLoading }: HistoryTableRowProps) {
   const dispatch = useDispatch();
   const [editItem, { isLoading: isLoadingEdit }] = useEditItemMutation();
   const [deleteItem, { isLoading: isLoadingDelete }] = useDeleteItemMutation();
@@ -40,10 +34,10 @@ export default function HistoryTableRow({
       const newItem = { ...item, categorySub: `${minutes}分` };
       await editItem(newItem);
       dispatch(resetLastItems());
-      setNotification({ message: '更新しました', severity: 'success' });
+      dispatch(showNotification({ message: '更新しました', severity: 'success' }));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
-      setNotification({ message: '更新に失敗しました', severity: 'error' });
+      dispatch(showNotification({ message: '更新に失敗しました', severity: 'error' }));
     }
   };
 
@@ -58,10 +52,10 @@ export default function HistoryTableRow({
     try {
       await deleteItem(item.id);
       dispatch(resetLastItems());
-      setNotification({ message: '削除しました', severity: 'success' });
+      dispatch(showNotification({ message: '削除しました', severity: 'success' }));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
-      setNotification({ message: '削除に失敗しました', severity: 'error' });
+      dispatch(showNotification({ message: '削除に失敗しました', severity: 'error' }));
     }
   };
 

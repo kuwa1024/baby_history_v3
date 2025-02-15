@@ -10,6 +10,7 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
+import notificationReducer from '@/components/notification/notificationSlice';
 import authReducer from '@/features/auth/authSlice';
 import historyParamReducer from '@/features/history/historyParamSlice';
 import { historySlice } from '@/features/history/historySlice';
@@ -24,6 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   historyParam: historyParamReducer,
+  notification: notificationReducer,
   [historySlice.reducerPath]: historySlice.reducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);

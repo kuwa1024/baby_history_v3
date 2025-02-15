@@ -2,7 +2,7 @@ import { Button, Grid2, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useDispatch } from 'react-redux';
-import { NotificationProps } from '@/components/Notification';
+import { showNotification } from '@/components/notification/notificationSlice';
 import { Select, SelectProps } from '@/components/Select';
 import { category } from '@/consts/category';
 import { categorySub } from '@/consts/categorySub';
@@ -16,10 +16,9 @@ interface Inputs {
 
 interface HistoryAddFormProps {
   setIsLoading: (isLoading: boolean) => void;
-  setNotification: (notification: NotificationProps) => void;
 }
 
-export default function HistoryAddForm({ setIsLoading, setNotification }: HistoryAddFormProps) {
+export default function HistoryAddForm({ setIsLoading }: HistoryAddFormProps) {
   const dispatch = useDispatch();
   const [addNewItem, { isLoading }] = useAddNewItemMutation();
   const { control, watch, handleSubmit, reset, register, unregister, setValue } = useForm<Inputs>();
@@ -58,10 +57,10 @@ export default function HistoryAddForm({ setIsLoading, setNotification }: Histor
       }).unwrap();
       reset();
       dispatch(resetLastItems());
-      setNotification({ message: '登録しました', severity: 'success' });
+      dispatch(showNotification({ message: '登録しました', severity: 'success' }));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
-      setNotification({ message: '登録に失敗しました', severity: 'error' });
+      dispatch(showNotification({ message: '登録に失敗しました', severity: 'error' }));
     }
   };
 
