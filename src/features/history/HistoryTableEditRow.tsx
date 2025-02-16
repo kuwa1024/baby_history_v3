@@ -6,7 +6,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { Controller, UseFormReturn } from 'react-hook-form-mui';
+import { Controller, useFormContext } from 'react-hook-form-mui';
 import { Select, SelectProps } from '@/components/Select';
 import { Inputs } from '@/features/history/HistoryList';
 import { Item } from '@/features/history/historySlice';
@@ -16,16 +16,16 @@ import { categorySub } from '@/utils/categorySub';
 interface HistoryTableEditRowProps {
   item: Item;
   setEditCell: (id: string) => void;
-  form: UseFormReturn<Inputs>;
 }
 
-export default function HistoryTableEditRow({ item, setEditCell, form }: HistoryTableEditRowProps) {
+export default function HistoryTableEditRow({ item, setEditCell }: HistoryTableEditRowProps) {
+  const { control, watch, setValue, unregister, register } = useFormContext<Inputs>();
   const categorySelectProps: SelectProps = {
     ...category,
-    control: form.control,
+    control: control,
   };
 
-  const categoryValue = form.watch('category');
+  const categoryValue = watch('category');
   const index = categoryValue
     ? category.relations[category.items.findIndex((item) => item === categoryValue)]
     : 0;
@@ -33,27 +33,25 @@ export default function HistoryTableEditRow({ item, setEditCell, form }: History
 
   const [categorySubSelectProps, setCategorySubSelectProps] = useState<SelectProps>({
     ...categorySubSelect,
-    sx: { width: '90%', marginLeft: '10%' },
-    control: form.control,
+    control: control,
   });
 
   useEffect(() => {
-    form.setValue('categorySub', '');
-    form.unregister('categorySub');
-    form.register('categorySub');
+    setValue('categorySub', '');
+    unregister('categorySub');
+    register('categorySub');
     if (categorySubSelect.items.some((value) => value === item.categorySub)) {
-      form.setValue('categorySub', item.categorySub);
+      setValue('categorySub', item.categorySub);
     }
     setCategorySubSelectProps({
       ...categorySubSelect,
-      sx: { width: '90%', marginLeft: '10%' },
-      control: form.control,
+      control: control,
     });
   }, [categoryValue]);
 
   useEffect(() => {
-    form.setValue('category', item.category);
-    form.setValue('createDatetime', item.createDatetime);
+    setValue('category', item.category);
+    setValue('createDatetime', item.createDatetime);
   }, []);
 
   const onClear = () => {
@@ -66,7 +64,7 @@ export default function HistoryTableEditRow({ item, setEditCell, form }: History
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Controller
             name="createDatetime"
-            control={form.control}
+            control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <DateTimePicker

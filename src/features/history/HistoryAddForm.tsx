@@ -65,13 +65,13 @@ export default function HistoryAddForm() {
     <Paper sx={{ position: 'fixed', bottom: 10, left: 0, right: 0 }} elevation={3}>
       <form onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
         <Grid2 container spacing={1}>
-          <Grid2 size={4} sx={{ padding: '20px' }}>
+          <Grid2 size={4} sx={{ paddingTop: '15px', paddingBottom: '15px' }}>
             <Select {...categorySelectProps} />
           </Grid2>
-          <Grid2 size={4} sx={{ padding: '20px' }}>
+          <Grid2 size={4} sx={{ paddingTop: '15px', paddingBottom: '15px' }}>
             <Select {...categorySubSelectProps} />
           </Grid2>
-          <Grid2 size={4} sx={{ padding: '10px' }}>
+          <Grid2 size={4} sx={{ paddingTop: '5px', paddingBottom: '5px' }}>
             <Button
               type="submit"
               variant="contained"

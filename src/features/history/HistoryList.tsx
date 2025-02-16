@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { TableRow, TableContainer, Paper, Table, TableCell, TableBody } from '@mui/material';
 import TableHead from '@mui/material/TableHead';
 import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import { setLoading } from '@/components/loading/loadingSlice';
@@ -35,7 +35,7 @@ export default function HistoryList() {
   const { data: items = [], isLoading, isError } = useGetItemsQuery({ lastItems, search });
   const [editCell, setEditCell] = useState<string>('');
   const [editItem] = useEditItemMutation();
-  const form = useForm<Inputs>();
+  const methods = useForm<Inputs>();
 
   useEffect(() => {
     dispatch(setLoading(isLoading));
@@ -73,35 +73,37 @@ export default function HistoryList() {
   };
 
   return (
-    <form onSubmit={(event) => void form.handleSubmit(onSubmit)(event)}>
-      <TableContainer component={Paper} sx={{ marginBottom: '100px' }}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ width: '45%' }} align="center">
-                日時
-              </TableCell>
-              <TableCell sx={{ width: '45%' }} align="center">
-                行動
-              </TableCell>
-              <TableCell sx={{ width: '10%' }} align="center">
-                操作
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((item) => (
-              <StyledTableRow key={item.id}>
-                {editCell === item.id ? (
-                  <HistoryTableEditRow item={item} setEditCell={setEditCell} form={form} />
-                ) : (
-                  <HistoryTableRow item={item} setEditCell={setEditCell} />
-                )}
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={(event) => void methods.handleSubmit(onSubmit)(event)}>
+        <TableContainer component={Paper} sx={{ marginBottom: '100px' }}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ width: '45%' }} align="center">
+                  日時
+                </TableCell>
+                <TableCell sx={{ width: '45%' }} align="center">
+                  行動
+                </TableCell>
+                <TableCell sx={{ width: '10%' }} align="center">
+                  操作
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {items.map((item) => (
+                <StyledTableRow key={item.id}>
+                  {editCell === item.id ? (
+                    <HistoryTableEditRow item={item} setEditCell={setEditCell} />
+                  ) : (
+                    <HistoryTableRow item={item} setEditCell={setEditCell} />
+                  )}
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </form>
+    </FormProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { Box, SxProps, Theme } from '@mui/material';
+import { Box } from '@mui/material';
 import { Control, SelectElement } from 'react-hook-form-mui';
 
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -8,7 +8,6 @@ export interface SelectProps {
   label: string;
   items: string[];
   required?: boolean;
-  sx?: SxProps<Theme>;
 }
 
 export const Select = (props: SelectProps) => {
@@ -21,7 +20,7 @@ export const Select = (props: SelectProps) => {
         control={props.control}
         options={options}
         required={props.required}
-        sx={props.sx ?? { width: '100%' }}
+        sx={{ width: '100%' }}
       />
     </Box>
   );
