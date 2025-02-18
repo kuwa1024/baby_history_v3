@@ -4,7 +4,7 @@ import TableHead from '@mui/material/TableHead';
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form-mui';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/app/hooks';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { useInfiniteItems } from '@/features/history/api/getItems';
@@ -29,7 +29,7 @@ export interface Inputs {
 }
 
 export default function HistoryList() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const itemsQuery = useInfiniteItems();
 
   const [editCell, setEditCell] = useState<string>('');

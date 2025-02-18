@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface itemState {
+interface ItemState {
   search?: string;
 }
 
-const initialState: itemState = {};
+const initialState: ItemState = {};
 
 const itemSlice = createSlice({
   name: 'item',

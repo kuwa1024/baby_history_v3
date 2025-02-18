@@ -3,7 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 import Fab from '@mui/material/Fab';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/app/hooks';
 import { Select, SelectProps } from '@/components/Select';
 import { setSearch } from '@/features/history/api/itemSlice';
 import { category } from '@/utils/category';
@@ -13,7 +13,7 @@ interface Inputs {
 }
 
 export default function HistorySearchForm() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [categoryId, setCategoryId] = useState('');
 

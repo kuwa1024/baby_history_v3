@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { doc, setDoc } from 'firebase/firestore';
-import { useSelector } from 'react-redux';
 import { db } from '@/app/firebase';
-import { RootState } from '@/app/store';
+import { useAppSelector } from '@/app/hooks';
 import { getInfiniteItemsQueryOptions } from '@/features/history/api/getItems';
 import { Item } from '@/types/api';
 
@@ -17,7 +16,7 @@ const editItem = async (item: Item) => {
 
 export const useEditItem = () => {
   const queryClient = useQueryClient();
-  const search = useSelector((state: RootState) => state.item.search);
+  const search = useAppSelector((state) => state.item.search);
   return useMutation({
     onSuccess: () => {
       void queryClient.invalidateQueries({

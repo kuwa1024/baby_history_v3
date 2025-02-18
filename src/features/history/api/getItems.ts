@@ -9,9 +9,8 @@ import {
   query,
   getDocs,
 } from 'firebase/firestore';
-import { useSelector } from 'react-redux';
 import { db } from '@/app/firebase';
-import { RootState } from '@/app/store';
+import { useAppSelector } from '@/app/hooks';
 import { Item } from '@/types/api';
 
 const pageLimit = 20;
@@ -57,7 +56,7 @@ export const getInfiniteItemsQueryOptions = (search?: string) => {
 };
 
 export const useInfiniteItems = () => {
-  const search = useSelector((state: RootState) => state.item.search);
+  const search = useAppSelector((state) => state.item.search);
   return useInfiniteQuery({
     ...getInfiniteItemsQueryOptions(search),
   });

@@ -1,11 +1,10 @@
 import { Snackbar, Alert, AlertColor } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/store';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { hideNotification } from './notificationSlice';
 
 export default function Notification() {
-  const dispatch = useDispatch();
-  const { message, severity, open } = useSelector((state: RootState) => state.notification);
+  const dispatch = useAppDispatch();
+  const { message, severity, open } = useAppSelector((state) => state.notification);
 
   const handleClose = () => {
     dispatch(hideNotification());

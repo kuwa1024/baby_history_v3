@@ -1,7 +1,7 @@
 import { Button, Grid2, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/app/hooks';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { Select, SelectProps } from '@/components/Select';
@@ -15,7 +15,7 @@ interface Inputs {
 }
 
 export default function HistoryAddForm() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const createItem = useCreateItem();
   const { control, watch, handleSubmit, reset, register, unregister, setValue } = useForm<Inputs>();
   const [categorySubSelectProps, setCategorySubSelectProps] = useState<SelectProps>({

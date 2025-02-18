@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton, Stack, TableCell } from '@mui/material';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/app/hooks';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { useDeleteItem } from '@/features/history/api/deleteItem';
@@ -17,7 +17,7 @@ interface HistoryTableRowProps {
 }
 
 export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const editItem = useEditItem();
   const deleteItem = useDeleteItem();
 
