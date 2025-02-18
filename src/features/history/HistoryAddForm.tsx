@@ -69,13 +69,13 @@ export default function HistoryAddForm() {
           <Grid2 size={4} sx={{ paddingTop: '15px', paddingBottom: '15px' }}>
             <Select {...categorySubSelectProps} />
           </Grid2>
-          <Grid2 size={4} sx={{ paddingTop: '5px', paddingBottom: '5px' }}>
+          <Grid2 size={4} sx={{ paddingTop: '15px', paddingBottom: '15px' }}>
             <Button
               type="submit"
               variant="contained"
               sx={{
                 width: '100%',
-                height: '70%',
+                height: '100%',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
