@@ -6,8 +6,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
-import { resetLastItems } from '@/features/history/historyParamSlice';
-import { Item, useDeleteItemMutation, useEditItemMutation } from '@/features/history/historySlice';
+import { useDeleteItem } from '@/features/history/api/deleteItem';
+import { useEditItem } from '@/features/history/api/editItem';
+import { Item } from '@/types/api';
 import { formatDate } from '@/utils/format';
 
 interface HistoryTableRowProps {
@@ -17,25 +18,23 @@ interface HistoryTableRowProps {
 
 export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowProps) {
   const dispatch = useDispatch();
-  const [editItem, { isLoading: isLoadingEdit }] = useEditItemMutation();
-  const [deleteItem, { isLoading: isLoadingDelete }] = useDeleteItemMutation();
+  const editItem = useEditItem();
+  const deleteItem = useDeleteItem();
 
   useEffect(() => {
-    dispatch(setLoading(isLoadingEdit || isLoadingDelete));
-  }, [isLoadingEdit, isLoadingDelete]);
+    dispatch(setLoading(editItem.isPending || deleteItem.isPending));
+  }, [editItem.isPending, deleteItem.isPending]);
 
-  const onAlarm = async () => {
+  const onAlarm = () => {
     try {
-      const date1 = new Date(item.createDatetime);
+      const date1 = item.createDatetime.toDate();
       const date2 = new Date();
       const diff =
         Math.floor(date2.getTime() / (60 * 1000)) - Math.floor(date1.getTime() / (60 * 1000));
       const minutes = Math.floor(Math.abs(diff));
       const newItem = { ...item, categorySub: `${minutes}分` };
-      await editItem(newItem);
-      dispatch(resetLastItems());
+      editItem.mutate(newItem);
       dispatch(showNotification({ message: '更新しました', severity: 'success' }));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
       dispatch(showNotification({ message: '更新に失敗しました', severity: 'error' }));
     }
@@ -45,15 +44,13 @@ export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowPr
     setEditCell(item.id);
   };
 
-  const onDelete = async () => {
+  const onDelete = () => {
     if (!confirm('削除しますか？')) {
       return;
     }
     try {
-      await deleteItem(item.id);
-      dispatch(resetLastItems());
+      deleteItem.mutate(item.id);
       dispatch(showNotification({ message: '削除しました', severity: 'success' }));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
       dispatch(showNotification({ message: '削除に失敗しました', severity: 'error' }));
     }

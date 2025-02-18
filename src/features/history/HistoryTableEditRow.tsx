@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form-mui';
 import { Select, SelectProps } from '@/components/Select';
 import { Inputs } from '@/features/history/HistoryList';
-import { Item } from '@/features/history/historySlice';
+import { Item } from '@/types/api';
 import { category } from '@/utils/category';
 import { categorySub } from '@/utils/categorySub';
 
@@ -37,9 +37,9 @@ export default function HistoryTableEditRow({ item, setEditCell }: HistoryTableE
   });
 
   useEffect(() => {
-    setValue('categorySub', '');
     unregister('categorySub');
     register('categorySub');
+    setValue('categorySub', '');
     if (categorySubSelect.items.some((value) => value === item.categorySub)) {
       setValue('categorySub', item.categorySub);
     }
@@ -51,7 +51,7 @@ export default function HistoryTableEditRow({ item, setEditCell }: HistoryTableE
 
   useEffect(() => {
     setValue('category', item.category);
-    setValue('createDatetime', item.createDatetime);
+    setValue('createDatetime', item.createDatetime.toDate().toLocaleString());
   }, []);
 
   const onClear = () => {

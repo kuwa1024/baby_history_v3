@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useDispatch } from 'react-redux';
 import { Select, SelectProps } from '@/components/Select';
-import { setSearch } from '@/features/history/historyParamSlice';
+import { setSearch } from '@/features/history/api/itemSlice';
 import { category } from '@/utils/category';
 
 interface Inputs {

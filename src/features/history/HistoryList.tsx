@@ -1,16 +1,16 @@
 import styled from '@emotion/styled';
 import { TableRow, TableContainer, Paper, Table, TableCell, TableBody } from '@mui/material';
 import TableHead from '@mui/material/TableHead';
+import { Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form-mui';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/store';
+import { useDispatch } from 'react-redux';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
-import { setLastItems } from '@/features/history/historyParamSlice';
-import { useEditItemMutation, useGetItemsQuery } from '@/features/history/historySlice';
+import { useInfiniteItems } from '@/features/history/api/getItems';
 import HistoryTableEditRow from '@/features/history/HistoryTableEditRow';
 import HistoryTableRow from '@/features/history/HistoryTableRow';
+import { useEditItem } from './api/editItem';
 
 const StyledTableRow = styled(TableRow)(() => ({
   '&:nth-of-type(odd)': {
@@ -23,40 +23,38 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 export interface Inputs {
-  createDatetime: string;
   category: string;
   categorySub: string;
+  createDatetime: string;
 }
 
 export default function HistoryList() {
   const dispatch = useDispatch();
-  const lastItems = useSelector((state: RootState) => state.historyParam.lastItems);
-  const search = useSelector((state: RootState) => state.historyParam.search);
-  const { data: items = [], isLoading, isError } = useGetItemsQuery({ lastItems, search });
+  const itemsQuery = useInfiniteItems();
+
   const [editCell, setEditCell] = useState<string>('');
-  const [editItem] = useEditItemMutation();
+  const editItem = useEditItem();
   const methods = useForm<Inputs>();
 
   useEffect(() => {
-    dispatch(setLoading(isLoading));
-  }, [isLoading]);
+    dispatch(setLoading(itemsQuery.isPending));
+  }, [itemsQuery.isPending]);
 
   useEffect(() => {
-    if (isError) {
-      dispatch(
-        showNotification({
-          message: 'データの取得に失敗しました',
-          severity: 'error',
-        })
-      );
+    if (itemsQuery.isError) {
+      dispatch(showNotification({ message: 'データの取得に失敗しました', severity: 'error' }));
     }
-  }, [isError]);
+  }, [itemsQuery.isError]);
+
+  const items = itemsQuery.data?.pages.flatMap((page) => page) || [];
 
   useEffect(() => {
     const handleScroll = () => {
       const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
       if (bottom) {
-        dispatch(setLastItems(items));
+        itemsQuery.fetchNextPage().catch(() => {
+          dispatch(showNotification({ message: 'データの取得に失敗しました', severity: 'error' }));
+        });
       }
     };
 
@@ -66,8 +64,13 @@ export default function HistoryList() {
     };
   }, [items]);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await editItem({ ...data, id: editCell });
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    editItem.mutate({
+      id: editCell,
+      category: data.category,
+      categorySub: data.categorySub ?? '',
+      createDatetime: Timestamp.fromDate(new Date(data.createDatetime)),
+    });
     dispatch(showNotification({ message: '更新しました', severity: 'success' }));
     setEditCell('');
   };

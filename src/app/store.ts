@@ -10,11 +10,10 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
-import LoadingReducer from '@/components/loading/loadingSlice';
+import loadingReducer from '@/components/loading/loadingSlice';
 import notificationReducer from '@/components/notification/notificationSlice';
 import authReducer from '@/features/auth/authSlice';
-import historyParamReducer from '@/features/history/historyParamSlice';
-import { historySlice } from '@/features/history/historySlice';
+import itemReducer from '@/features/history/api/itemSlice';
 
 const persistConfig = {
   key: 'root',
@@ -25,10 +24,9 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  historyParam: historyParamReducer,
-  loading: LoadingReducer,
+  item: itemReducer,
+  loading: loadingReducer,
   notification: notificationReducer,
-  [historySlice.reducerPath]: historySlice.reducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -39,7 +37,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(historySlice.middleware),
+    }),
 });
 
 export const persistor = persistStore(store);

@@ -5,8 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
 import { Select, SelectProps } from '@/components/Select';
-import { resetLastItems } from '@/features/history/historyParamSlice';
-import { useAddNewItemMutation } from '@/features/history/historySlice';
+import { useCreateItem } from '@/features/history/api/createItem';
 import { category } from '@/utils/category';
 import { categorySub } from '@/utils/categorySub';
 
@@ -17,12 +16,16 @@ interface Inputs {
 
 export default function HistoryAddForm() {
   const dispatch = useDispatch();
-  const [addNewItem, { isLoading }] = useAddNewItemMutation();
+  const createItem = useCreateItem();
   const { control, watch, handleSubmit, reset, register, unregister, setValue } = useForm<Inputs>();
   const [categorySubSelectProps, setCategorySubSelectProps] = useState<SelectProps>({
     ...categorySub[0],
     control: control,
   });
+
+  useEffect(() => {
+    dispatch(setLoading(createItem.isPending));
+  }, [createItem.isPending]);
 
   const categorySelectProps: SelectProps = {
     ...category,
@@ -36,24 +39,19 @@ export default function HistoryAddForm() {
   const categorySubSelect = categorySub[index];
 
   useEffect(() => {
-    setValue('categorySub', '');
     unregister('categorySub');
+    setValue('categorySub', '');
     setCategorySubSelectProps({ ...categorySubSelect, control: control });
     register('categorySub');
   }, [categoryValue]);
 
-  useEffect(() => {
-    dispatch(setLoading(isLoading));
-  }, [isLoading]);
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     try {
-      await addNewItem({
+      createItem.mutate({
         category: data.category,
         categorySub: data.categorySub ?? '',
-      }).unwrap();
+      });
       reset();
-      dispatch(resetLastItems());
       dispatch(showNotification({ message: '登録しました', severity: 'success' }));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
