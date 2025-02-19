@@ -46,17 +46,13 @@ export default function HistoryAddForm() {
   }, [categoryValue]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    try {
-      createItem.mutate({
-        category: data.category,
-        categorySub: data.categorySub ?? '',
-      });
-      reset();
-      dispatch(showNotification({ message: '登録しました', severity: 'success' }));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch {
-      dispatch(showNotification({ message: '登録に失敗しました', severity: 'error' }));
-    }
+    createItem.mutate({
+      category: data.category,
+      categorySub: data.categorySub,
+    });
+    reset();
+    dispatch(showNotification({ message: '登録しました', severity: 'success' }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

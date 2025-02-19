@@ -21,6 +21,7 @@ export const Select = (props: SelectProps) => {
         options={options}
         required={props.required}
         sx={{ width: '100%' }}
+        data-testid={props.id}
       />
     </Box>
   );

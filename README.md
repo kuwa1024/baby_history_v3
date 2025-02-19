@@ -26,6 +26,12 @@ yarn dev
 firebase emulators:start --import=./emulators.local --export-on-exit
 ```
 
+## テストカバレッジ
+
+```
+yarn test --coverage.enabled --coverage.all
+```
+
 ## メモ
 
 distディレクトリはlintの邪魔になるので消す
