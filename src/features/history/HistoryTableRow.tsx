@@ -26,18 +26,14 @@ export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowPr
   }, [editItem.isPending, deleteItem.isPending]);
 
   const onAlarm = () => {
-    try {
-      const date1 = item.createDatetime.toDate();
-      const date2 = new Date();
-      const diff =
-        Math.floor(date2.getTime() / (60 * 1000)) - Math.floor(date1.getTime() / (60 * 1000));
-      const minutes = Math.floor(Math.abs(diff));
-      const newItem = { ...item, categorySub: `${minutes}分` };
-      editItem.mutate(newItem);
-      dispatch(showNotification({ message: '更新しました', severity: 'success' }));
-    } catch {
-      dispatch(showNotification({ message: '更新に失敗しました', severity: 'error' }));
-    }
+    const date1 = item.createDatetime.toDate();
+    const date2 = new Date();
+    const diff =
+      Math.floor(date2.getTime() / (60 * 1000)) - Math.floor(date1.getTime() / (60 * 1000));
+    const minutes = Math.floor(Math.abs(diff));
+    const newItem = { ...item, categorySub: `${minutes}分` };
+    editItem.mutate(newItem);
+    dispatch(showNotification({ message: '更新しました', severity: 'success' }));
   };
 
   const onEdit = () => {
@@ -48,12 +44,8 @@ export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowPr
     if (!confirm('削除しますか？')) {
       return;
     }
-    try {
-      deleteItem.mutate(item.id);
-      dispatch(showNotification({ message: '削除しました', severity: 'success' }));
-    } catch {
-      dispatch(showNotification({ message: '削除に失敗しました', severity: 'error' }));
-    }
+    deleteItem.mutate(item.id);
+    dispatch(showNotification({ message: '削除しました', severity: 'success' }));
   };
 
   return (
