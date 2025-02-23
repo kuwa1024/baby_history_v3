@@ -46,7 +46,6 @@ export default function HistorySearchForm() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setCategoryId(data.category);
-    console.log('vvvvvvvvvvvvvvvvv');
     dispatch(setSearch(data.category));
     handleClose();
     reset();
