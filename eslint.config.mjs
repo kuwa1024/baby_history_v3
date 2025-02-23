@@ -50,5 +50,8 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
+    ignores: ['dist', 'coverage', 'node_modules'],
   }
 );
