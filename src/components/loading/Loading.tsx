@@ -2,7 +2,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useAppSelector } from '@/app/hooks';
 
-export default function Loading() {
+export const Loading = () => {
   const open = useAppSelector((state) => state.loading.open);
   return (
     <div>
@@ -11,4 +11,4 @@ export default function Loading() {
       </Backdrop>
     </div>
   );
-}
+};

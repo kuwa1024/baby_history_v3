@@ -1,8 +1,8 @@
 import { Container } from '@mui/material';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
-import Loading from '@/components/loading/Loading';
-import Notification from '@/components/notification/Notification';
+import { Loading } from '@/components/loading/Loading';
+import { Notification } from '@/components/notification/Notification';
 import { selectCurrentUid } from '@/features/auth/authSlice';
 import { SignIn } from '@/features/auth/SignIn';
 import { SignOut } from '@/features/auth/SignOut';

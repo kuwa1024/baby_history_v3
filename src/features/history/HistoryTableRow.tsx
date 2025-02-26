@@ -16,7 +16,7 @@ interface HistoryTableRowProps {
   setEditCell: (id: string) => void;
 }
 
-export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowProps) {
+export const HistoryTableRow = ({ item, setEditCell }: HistoryTableRowProps) => {
   const dispatch = useAppDispatch();
   const editItem = useEditItem();
   const deleteItem = useDeleteItem();
@@ -75,4 +75,4 @@ export default function HistoryTableRow({ item, setEditCell }: HistoryTableRowPr
       </TableCell>
     </>
   );
-}
+};

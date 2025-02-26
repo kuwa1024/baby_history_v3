@@ -18,7 +18,7 @@ interface HistoryTableEditRowProps {
   setEditCell: (id: string) => void;
 }
 
-export default function HistoryTableEditRow({ item, setEditCell }: HistoryTableEditRowProps) {
+export const HistoryTableEditRow = ({ item, setEditCell }: HistoryTableEditRowProps) => {
   const { control, watch, setValue, unregister, register } = useFormContext<Inputs>();
   const categorySelectProps: SelectProps = {
     ...category,
@@ -100,4 +100,4 @@ export default function HistoryTableEditRow({ item, setEditCell }: HistoryTableE
       </TableCell>
     </>
   );
-}
+};

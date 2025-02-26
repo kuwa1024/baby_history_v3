@@ -7,10 +7,10 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form-mui';
 import { useAppDispatch } from '@/app/hooks';
 import { setLoading } from '@/components/loading/loadingSlice';
 import { showNotification } from '@/components/notification/notificationSlice';
+import { useEditItem } from '@/features/history/api/editItem';
 import { useInfiniteItems } from '@/features/history/api/getItems';
-import HistoryTableEditRow from '@/features/history/HistoryTableEditRow';
-import HistoryTableRow from '@/features/history/HistoryTableRow';
-import { useEditItem } from './api/editItem';
+import { HistoryTableEditRow } from '@/features/history/HistoryTableEditRow';
+import { HistoryTableRow } from '@/features/history/HistoryTableRow';
 
 const StyledTableRow = styled(TableRow)(() => ({
   '&:nth-of-type(odd)': {
@@ -28,7 +28,7 @@ export interface Inputs {
   createDatetime: string;
 }
 
-export default function HistoryList() {
+export const HistoryList = () => {
   const dispatch = useAppDispatch();
   const itemsQuery = useInfiniteItems();
 
@@ -77,8 +77,11 @@ export default function HistoryList() {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={(event) => void methods.handleSubmit(onSubmit)(event)}>
-        <TableContainer component={Paper} sx={{ marginBottom: '100px' }}>
+      <form
+        onSubmit={(event) => void methods.handleSubmit(onSubmit)(event)}
+        data-testid="historyForm"
+      >
+        <TableContainer component={Paper} sx={{ marginBottom: '100px' }} data-testid="historyList">
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -109,4 +112,4 @@ export default function HistoryList() {
       </form>
     </FormProvider>
   );
-}
+};

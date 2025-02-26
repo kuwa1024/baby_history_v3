@@ -2,7 +2,7 @@ import { Snackbar, Alert, AlertColor } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { hideNotification } from './notificationSlice';
 
-export default function Notification() {
+export const Notification = () => {
   const dispatch = useAppDispatch();
   const { message, severity, open } = useAppSelector((state) => state.notification);
 
@@ -27,4 +27,4 @@ export default function Notification() {
       </Snackbar>
     </div>
   );
-}
+};

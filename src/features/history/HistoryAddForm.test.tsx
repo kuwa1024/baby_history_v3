@@ -4,12 +4,16 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { Mock } from 'vitest';
 import { store } from '@/app/store';
-import Notification from '@/components/notification/Notification';
-import HistoryAddForm from '@/features/history/HistoryAddForm';
+import { Notification } from '@/components/notification/Notification';
+import { HistoryAddForm } from '@/features/history/HistoryAddForm';
 
 const queryClient = new QueryClient();
 
 describe('HistoryAddForm', () => {
+  beforeAll(() => {
+    window.scrollTo = vi.fn();
+  });
+
   it('カテゴリーとサブカテゴリーのセレクトボックスを持つフォームが表示される', () => {
     render(
       <Provider store={store}>

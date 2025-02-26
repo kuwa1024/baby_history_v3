@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Timestamp } from 'firebase/firestore';
 import { Mock } from 'vitest';
-import HistoryTableRow from '@/features/history/HistoryTableRow';
+import { HistoryTableRow } from '@/features/history/HistoryTableRow';
 import { Item } from '@/types/api';
 import { useDeleteItem } from './api/deleteItem';
 import { useEditItem } from './api/editItem';
