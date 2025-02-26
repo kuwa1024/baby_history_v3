@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Mock } from 'vitest';
 import { useAppDispatch } from '@/app/hooks';
 import { store } from '@/app/store';
-import HistorySearchForm from '@/features/history/HistorySearchForm';
+import { HistorySearchForm } from '@/features/history/HistorySearchForm';
 import { setSearch } from './api/itemSlice';
 
 vi.mock('@/app/hooks', () => ({

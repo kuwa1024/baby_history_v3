@@ -14,7 +14,7 @@ interface Inputs {
   categorySub: string;
 }
 
-export default function HistoryAddForm() {
+export const HistoryAddForm = () => {
   const dispatch = useAppDispatch();
   const createItem = useCreateItem();
   const { control, watch, handleSubmit, reset, register, unregister, setValue } = useForm<Inputs>();
@@ -56,7 +56,11 @@ export default function HistoryAddForm() {
   };
 
   return (
-    <Paper sx={{ position: 'fixed', bottom: 10, left: 0, right: 0 }} elevation={3}>
+    <Paper
+      sx={{ position: 'fixed', bottom: 10, left: 0, right: 0 }}
+      elevation={3}
+      data-testid="historyAddForm"
+    >
       <form onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
         <Grid2 container spacing={1}>
           <Grid2 size={4} sx={{ paddingTop: '15px', paddingBottom: '15px' }}>
@@ -84,4 +88,4 @@ export default function HistoryAddForm() {
       </form>
     </Paper>
   );
-}
+};

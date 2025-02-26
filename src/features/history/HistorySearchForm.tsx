@@ -12,7 +12,7 @@ interface Inputs {
   category: string;
 }
 
-export default function HistorySearchForm() {
+export const HistorySearchForm = () => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [categoryId, setCategoryId] = useState('');
@@ -59,6 +59,7 @@ export default function HistorySearchForm() {
         onClick={handleClickOpen}
         aria-label="add"
         sx={{ position: 'fixed', bottom: 180, right: 16 }}
+        data-testid="historySearchForm"
       >
         <SearchIcon />
       </Fab>
@@ -84,4 +85,4 @@ export default function HistorySearchForm() {
       </Dialog>
     </div>
   );
-}
+};
