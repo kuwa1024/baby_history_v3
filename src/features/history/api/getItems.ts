@@ -13,7 +13,7 @@ import { db } from '@/app/firebase';
 import { useAppSelector } from '@/app/hooks';
 import { Item } from '@/types/api';
 
-const pageLimit = 20;
+const pageLimit = 50;
 
 const getItems = async ({ search, lastItem }: { search?: string; lastItem?: Item }) => {
   const itemRef = collection(db, 'items');
