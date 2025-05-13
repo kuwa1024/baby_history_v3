@@ -50,7 +50,8 @@ export const HistoryList = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
+      const bottom =
+        window.innerHeight + window.scrollY + 500 >= document.documentElement.scrollHeight;
       if (bottom) {
         itemsQuery.fetchNextPage().catch(() => {
           dispatch(showNotification({ message: 'データの取得に失敗しました', severity: 'error' }));
