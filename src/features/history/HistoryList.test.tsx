@@ -1,5 +1,5 @@
 import { TableCell } from '@mui/material';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Timestamp } from 'firebase/firestore';
 import { Mock } from 'vitest';
 import { useAppDispatch } from '@/app/hooks';
@@ -115,20 +115,27 @@ describe('HistoryList', () => {
     expect(dispatch).toHaveBeenCalledWith(setLoading(true));
   });
 
-  it('スクロールイベントが発生したときに次のページがフェッチされる', () => {
-    const fetchNextPage = vi.fn().mockResolvedValue(undefined);
-    (useInfiniteItems as Mock).mockImplementationOnce(() => ({
-      data: {
-        pages: [[{ id: '1', category: 'test' }]],
-      },
+  it('スクロールイベントが発生したときに次のページがフェッチされる', async () => {
+    const fetchNextPage = vi.fn(() => Promise.resolve());
+    (useInfiniteItems as Mock).mockReturnValue({
+      data: { pages: [[{ id: '1', category: 'test' }]] },
       isPending: false,
       isError: false,
       fetchNextPage,
-    }));
+    });
     render(<HistoryList />);
 
-    fireEvent.scroll(window, { target: { scrollTop: 10 } });
-    expect(fetchNextPage).toHaveBeenCalledTimes(1);
+    Object.defineProperty(window, 'innerHeight', { value: 100, writable: true });
+    Object.defineProperty(window, 'scrollY', { value: 900, writable: true });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 1000,
+      writable: true,
+    });
+
+    fireEvent.scroll(window);
+    await waitFor(() => {
+      expect(fetchNextPage).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('フォームが正しいデータでサブミットされる', () => {
